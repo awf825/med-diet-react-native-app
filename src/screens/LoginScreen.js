@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import {
   SafeAreaView,
   View,
@@ -17,8 +17,12 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import CustomButton from '../components/CustomButton';
 import InputField from '../components/InputField';
+import { AuthContext } from '../context/AuthContext';
 
 const LoginScreen = ({navigation}) => {
+    const {login} = useContext(AuthContext)
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
   return (
     <SafeAreaView style={{flex: 1, justifyContent: 'center'}}>
       <View style={{paddingHorizontal: 25}}>
@@ -51,10 +55,12 @@ const LoginScreen = ({navigation}) => {
             style={{marginRight: 5}}
           />
           }
-          keyboardType="email-address"
+          keyboardType="default"
+          value={username}
+          onChangeText={text => setUsername(text)}
         />
 
-<InputField
+        <InputField
           label={'Password'}
           icon={
             <Ionicons
@@ -67,9 +73,13 @@ const LoginScreen = ({navigation}) => {
           inputType="password"
           fieldButtonLabel={"Forgot?"}
           fieldButtonFunction={() => {}}
+          value={password}
+          onChangeText={text => setPassword(text)}
         />
         
-        <CustomButton label={"Login"} onPress={() => {}} />
+        <CustomButton label={"Login"} onPress={() => {
+          login(username, password);
+        }} />
 
         <Text style={{textAlign: 'center', color: '#666', marginBottom: 30}}>
           Or, login with ...
