@@ -21,7 +21,7 @@ export const AuthProvider = ({children}) => {
             // let userInfo = resp.data.user
             setUserToken(resp.data.token)
             // AsyncStorage.setItem('userInfo', resp.data.user)
-            AsyncStorage.setItem('userToken', resp.data.token)
+            AsyncStorage.setItem('userToken', JSON.stringify(resp.data.token))
         })
         .catch(e => {
             console.log(e)
