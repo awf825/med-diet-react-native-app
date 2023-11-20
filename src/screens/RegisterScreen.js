@@ -10,7 +10,7 @@ import {
 
 import DatePicker from 'react-native-date-picker';
 
-import InputField from '../components/InputField';
+import InputField from '../components/InputField/InputField';
 
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -19,7 +19,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 // import GoogleSVG from '../assets/images/auth/google.svg';
 // import FacebookSVG from '../assets/images/auth/facebook.svg';
 // import TwitterSVG from '../assets/images/auth/twitter.svg';
-import CustomButton from '../components/CustomButton';
+import CustomButton from '../components/CustomButton/CustomButton';
 
 const RegisterScreen = ({navigation}) => {
   const [date, setDate] = useState(new Date());
@@ -97,14 +97,14 @@ const RegisterScreen = ({navigation}) => {
 
         <InputField
           label={'Full Name'}
-          icon={
-            <Ionicons
-              name="person-outline"
-              size={20}
-              color="#666"
-              style={{marginRight: 5}}
-            />
-          }
+          // icon={
+          //   <Ionicons
+          //     name="person-outline"
+          //     size={20}
+          //     color="#666"
+          //     style={{marginRight: 5}}
+          //   />
+          // }
         />
 
         <InputField
@@ -122,27 +122,27 @@ const RegisterScreen = ({navigation}) => {
 
         <InputField
           label={'Password'}
-          icon={
-            <Ionicons
-              name="ios-lock-closed-outline"
-              size={20}
-              color="#666"
-              style={{marginRight: 5}}
-            />
-          }
+          // icon={
+          //   <Ionicons
+          //     name="ios-lock-closed-outline"
+          //     size={20}
+          //     color="#666"
+          //     style={{marginRight: 5}}
+          //   />
+          // }
           inputType="password"
         />
 
         <InputField
           label={'Confirm Password'}
-          icon={
-            <Ionicons
-              name="ios-lock-closed-outline"
-              size={20}
-              color="#666"
-              style={{marginRight: 5}}
-            />
-          }
+          // icon={
+          //   <Ionicons
+          //     name="ios-lock-closed-outline"
+          //     size={20}
+          //     color="#666"
+          //     style={{marginRight: 5}}
+          //   />
+          // }
           inputType="password"
         />
 

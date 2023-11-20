@@ -15,8 +15,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 // import FacebookSVG from '../assets/images/misc/facebook.svg';
 // import TwitterSVG from '../assets/images/misc/twitter.svg';
 
-import CustomButton from '../components/CustomButton';
-import InputField from '../components/InputField';
+import CustomButton from '../components/CustomButton/CustomButton';
+import InputField from '../components/InputField/InputField';
 import { AuthContext } from '../context/AuthContext';
 
 const LoginScreen = ({navigation}) => {
@@ -62,14 +62,14 @@ const LoginScreen = ({navigation}) => {
 
         <InputField
           label={'Password'}
-          icon={
-            <Ionicons
-            name="ios-lock-closed-outline"
-            size={20}
-            color="#666"
-            style={{marginRight: 5}}
-          />
-          }
+          // icon={
+          //   <Ionicons
+          //   name="ios-lock-closed-outline"
+          //   size={20}
+          //   color="#666"
+          //   style={{marginRight: 5}}
+          // />
+          // }
           inputType="password"
           fieldButtonLabel={"Forgot?"}
           fieldButtonFunction={() => {}}

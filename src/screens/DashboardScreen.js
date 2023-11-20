@@ -9,7 +9,7 @@ import {
   StatusBar,
   TouchableOpacity
 } from 'react-native';
-import CustomButton from '../components/CustomButton';
+import CustomButton from '../components/CustomButton/CustomButton';
 
 const DATA = [
   {
@@ -26,7 +26,7 @@ const DATA = [
   },
 ];
 
-const DashboardScreen = ({navigation}) => {
+const DashboardScreen = ({ navigation }) => {
     const _onPress = (item) => {
         console.log('_onPress: ', item)
     }
@@ -54,12 +54,14 @@ const DashboardScreen = ({navigation}) => {
             </Text> */}
             <CustomButton label={"Logout"} onPress={logout} />
             <CustomButton label={"Survey"} onPress={() => navigation.navigate('Survey')} />
-            <FlatList
+
+            {/* <FlatList
                 data={DATA}
                 // renderItem={({item}) => <Item item={item} />}
                 renderItem={_renderItem}
                 keyExtractor={item => item.id}
-            />
+            /> */}
+            
         </SafeAreaView>
     );
 };
