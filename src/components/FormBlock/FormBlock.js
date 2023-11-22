@@ -9,7 +9,7 @@ import {
     StatusBar
 } from 'react-native';
 
-const FormBlock = ({ item }) => {
+const FormBlock = ({ item, index }) => {
     // will be formik values in the future
     const [value, setValue] = useState(0);
 
@@ -22,7 +22,7 @@ const FormBlock = ({ item }) => {
     }
     
     return (
-        <View style={styles.item}>
+        <View style={styles.item} testId={`app-picker-${index}`}>
             <Text>{item.question_text}</Text>
             {
                 <AppPicker 

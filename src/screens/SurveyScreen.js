@@ -1,37 +1,51 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
-import FormBlock from '../components/FormBlock/FormBlock';
+import AppPicker from "../components/AppPicker/AppPicker"
 import {
   SafeAreaView,
   FlatList,
   StyleSheet,
-  StatusBar
+  StatusBar,
+  Text,
+  View
 } from 'react-native';
 import { BASE_URL } from '../config';
 
 const SurveyScreen = ({ navigation }) => {
     const [questions, setQuestions] = useState([]);
 
+    let options = [];
+    for (let i = 0; i <= 30; i++) {
+        options.push({
+            label: String(i),
+            value: i
+        })
+    }
+
     useEffect(() => {
         axios.get(`${BASE_URL}/api/questions/`)
         .then(resp => {
-            console.log(resp.data) 
             setQuestions(resp.data)
         })
         .catch(err => console.log(err))
     }, [])
 
-    const _onPress = (item) => {
-        console.log('_onPress: ', item)
-    }
-
-    const _renderItem = ({item}) => (
-        <FormBlock item={item} />
+    const _renderItem = ({item, index}) => (
+        // <FormBlock item={item} index={index} />
+        <View style={styles.item}>
+            {
+                <AppPicker 
+                    label={item.question_text}
+                    options={options} 
+                />
+            }
+        </View>
     );
 
     return (
         <SafeAreaView style={styles.container}>
             <FlatList
+                testId={"LIST"}
                 data={questions}
                 renderItem={_renderItem}
                 keyExtractor={item => item.question_id}
