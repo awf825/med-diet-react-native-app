@@ -77,31 +77,33 @@ const SurveyScreen = ({ navigation }) => {
             initialValues={getDynamicFormValues(questions)}
             onSubmit={values => _handleSubmit(values)}
         >
-            {({ setFieldValue, handleSubmit, values }) => (
-                <SafeAreaView style={styles.container}>
-                    <FlatList
-                        data={questions}
-                        renderItem={({item, index}) => (
-                            <View style={styles.item}>
-                                <Text>{item.question_text}</Text>
-                                <Picker
-                                    selectedValue={values[item.field_code]}
-                                    onValueChange={(itemValue, itemIndex) => {
-                                        setFieldValue(item.field_code, itemValue)
-                                    }}>
-                                    {
-                                        (item.field_type === "INT" ? numberOptions : radioOptions).map(option => {
-                                            return <Picker.Item key={option.value} label={option.label} value={option.value} />
-                                        })
-                                    }
-                                </Picker>
-                            </View>
-                        )}
-                        keyExtractor={item => item.question_id}
-                    />
-                    <Button onPress={handleSubmit} title="DONE"/>
-                </SafeAreaView>
-            )}
+            {
+                ({ setFieldValue, handleSubmit, values }) => (
+                    <SafeAreaView style={styles.container}>
+                        <FlatList
+                            data={questions}
+                            renderItem={({item, index}) => (
+                                <View style={styles.item}>
+                                    <Text>{item.question_text}</Text>
+                                    <Picker
+                                        selectedValue={values[item.field_code]}
+                                        onValueChange={(itemValue, itemIndex) => {
+                                            setFieldValue(item.field_code, itemValue)
+                                        }}>
+                                        {
+                                            (item.field_type === "INT" ? numberOptions : radioOptions).map(option => {
+                                                return <Picker.Item key={option.value} label={option.label} value={option.value} />
+                                            })
+                                        }
+                                    </Picker>
+                                </View>
+                            )}
+                            keyExtractor={item => item.question_id}
+                        />
+                        <Button onPress={handleSubmit} title="DONE"/>
+                    </SafeAreaView>
+                )
+            }
         </Formik> :
         <Text>LOADING</Text>
     );

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import {
   SafeAreaView,
@@ -10,60 +10,55 @@ import {
   TouchableOpacity
 } from 'react-native';
 import CustomButton from '../components/CustomButton/CustomButton';
-
-const DATA = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'First Item',
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'Second Item',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'Third Item',
-  },
-];
+import axios from 'axios';
+import { BASE_URL } from '../config';
+// import GaugeChart from 'react-gauge-chart';
+// import CircularProgress from 'react-native-circular-progress-indicator';
+import { AnimatedCircularProgress } from 'react-native-circular-progress';
+// https://www.npmjs.com/package/react-native-circular-progress
 
 const DashboardScreen = ({ navigation }) => {
-    const _onPress = (item) => {
-        console.log('_onPress: ', item)
-    }
+  const [submissions, setSubmissions] = useState([]);
 
-    const _renderItem = ({item}) => (
-        <TouchableOpacity onPress={() => _onPress(item)}>
-            <View style={styles.item}>
-                <Text>{item.title}</Text>
-            </View>
-        </TouchableOpacity>
-    );
+  useEffect(() => {
+    navigation.addListener('focus', () => {
+      axios.get(`${BASE_URL}/api/submissions/`)
+        .then(resp => {
+          console.log('resp.data: ', resp.data)
+          setSubmissions(resp.data)
+        })
+        .catch(err => console.log(err))
+    });
+  }, [navigation]);
 
-    const { logout } = useContext(AuthContext)
-    return (
-        <SafeAreaView style={styles.container}>
-            {/* <Text
-                style={{
-                    fontFamily: 'Roboto-Medium',
-                    fontSize: 28,
-                    fontWeight: '500',
-                    color: '#333',
-                    marginBottom: 30,
-                }}>
-                Logout
-            </Text> */}
-            <CustomButton label={"Logout"} onPress={logout} />
-            <CustomButton label={"Survey"} onPress={() => navigation.navigate('Survey')} />
+  const _renderItem = ({ item }) => (
+    <View style={styles.item}>
+      <Text>Submission ID: {item.submission_id}</Text>
+      <Text>Score: {item.score} / 151</Text>
+      <AnimatedCircularProgress
+        size={120}
+        width={15}
+        fill={Number(item.score) / 151 * 100}
+        tintColor="#00e0ff"
+        onAnimationComplete={() => console.log('onAnimationComplete')}
+        backgroundColor="#3d5875" 
+      />
+    </View>
+  );
 
-            {/* <FlatList
-                data={DATA}
-                // renderItem={({item}) => <Item item={item} />}
-                renderItem={_renderItem}
-                keyExtractor={item => item.id}
-            /> */}
-            
-        </SafeAreaView>
-    );
+  const { logout } = useContext(AuthContext)
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <CustomButton label={"Logout"} onPress={logout} />
+      <CustomButton label={"Survey"} onPress={() => navigation.navigate('Survey')} />
+      <FlatList
+        data={submissions}
+        renderItem={_renderItem}
+        keyExtractor={item => item.submission_id}
+      />
+    </SafeAreaView>
+  );
 };
 
 const styles = StyleSheet.create({
