@@ -83,7 +83,7 @@ const SurveyScreen = ({ navigation }) => {
                         <FlatList
                             data={questions}
                             renderItem={({item, index}) => (
-                                <View style={styles.item}>
+                                <View testID={`form-item-${index}`} style={styles.item}>
                                     <Text>{item.question_text}</Text>
                                     <Picker
                                         selectedValue={values[item.field_code]}
