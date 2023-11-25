@@ -6,16 +6,13 @@ import {
   FlatList,
   StyleSheet,
   Text,
-  StatusBar,
-  TouchableOpacity
+  StatusBar
 } from 'react-native';
 import CustomButton from '../components/CustomButton/CustomButton';
 import axios from 'axios';
 import { BASE_URL } from '../config';
-// import GaugeChart from 'react-gauge-chart';
-// import CircularProgress from 'react-native-circular-progress-indicator';
-import { AnimatedCircularProgress } from 'react-native-circular-progress';
 // https://www.npmjs.com/package/react-native-circular-progress
+import { AnimatedCircularProgress } from 'react-native-circular-progress';
 
 const DashboardScreen = ({ navigation }) => {
   const [submissions, setSubmissions] = useState([]);

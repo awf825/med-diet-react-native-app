@@ -4,6 +4,7 @@ import React from 'react';
 export default function CustomButton({label, onPress}) {
   return (
     <TouchableOpacity
+      testID={label}
       onPress={onPress}
       style={{
         backgroundColor: '#AD40AF',
