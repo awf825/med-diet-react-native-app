@@ -9,22 +9,19 @@ import {
   StatusBar
 } from 'react-native';
 import CustomButton from '../components/CustomButton/CustomButton';
-import axios from 'axios';
-import { BASE_URL } from '../config';
 // https://www.npmjs.com/package/react-native-circular-progress
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
+import AuthAxios from '../services/AuthAxios';
 
 const DashboardScreen = ({ navigation }) => {
+  const { userToken } = useContext(AuthContext)
   const [submissions, setSubmissions] = useState([]);
 
   useEffect(() => {
     navigation.addListener('focus', () => {
-      axios.get(`${BASE_URL}/api/submissions/`)
-        .then(resp => {
-          console.log('resp.data: ', resp.data)
-          setSubmissions(resp.data)
-        })
-        .catch(err => console.log(err))
+      AuthAxios(userToken).get("/api/submissions/")
+      .then(resp => { setSubmissions(resp.data) })
+      .catch(err => console.log(err))
     });
   }, [navigation]);
 

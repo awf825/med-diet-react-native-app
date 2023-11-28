@@ -1,16 +1,17 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import {
   Text,
 } from 'react-native';
-import { BASE_URL } from '../config';
 import SurveyForm from '../components/Forms/SurveyForm';
+import { AuthContext } from '../context/AuthContext';
+import AuthAxios from '../services/AuthAxios';
 
 const SurveyScreen = ({ navigation }) => {
+    const { userToken } = useContext(AuthContext)
     const [questions, setQuestions] = useState([]);
 
     useEffect(() => {
-        axios.get(`${BASE_URL}/api/questions/`)
+        AuthAxios(userToken).get("/api/questions/")
         .then(resp => {
             setQuestions(resp.data)
         })
@@ -18,8 +19,8 @@ const SurveyScreen = ({ navigation }) => {
     }, [])
 
     const _handleSubmit = (values) => {
-        axios.post(
-        `${BASE_URL}/api/submissions/submit`,
+        AuthAxios(userToken).post(
+            "/api/submissions/submit",
             questions.map((q) => {
                 return {
                     ...q,
