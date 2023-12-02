@@ -40,12 +40,8 @@ const DashboardScreen = ({ navigation }) => {
     </View>
   );
 
-  const { logout } = useContext(AuthContext)
-
   return (
     <SafeAreaView style={styles.container}>
-      <CustomButton label={"Logout"} onPress={logout} />
-      <CustomButton label={"Survey"} onPress={() => navigation.navigate('Survey')} />
       <FlatList
         data={submissions}
         renderItem={_renderItem}
