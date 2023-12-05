@@ -19,8 +19,8 @@ import CustomButton from '../components/CustomButton/CustomButton';
 import InputField from '../components/InputField/InputField';
 import { AuthContext } from '../context/AuthContext';
 
-const LoginScreen = ({navigation}) => {
-    const {login} = useContext(AuthContext)
+const LoginScreen = ({ navigation }) => {
+    const { login } = useContext(AuthContext)
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
   return (
@@ -46,6 +46,7 @@ const LoginScreen = ({navigation}) => {
         </Text>
 
         <InputField
+          testID={"EMAIL"}
           label={'Email ID'}
           icon={
             <MaterialIcons
@@ -61,6 +62,7 @@ const LoginScreen = ({navigation}) => {
         />
 
         <InputField
+          testID={"PASSWORD"}
           label={'Password'}
           // icon={
           //   <Ionicons
@@ -77,7 +79,7 @@ const LoginScreen = ({navigation}) => {
           onChangeText={text => setPassword(text)}
         />
         
-        <CustomButton label={"Login"} onPress={() => {
+        <CustomButton testID="LOGIN" label={"Login"} onPress={() => {
           login(username, password);
         }} />
 

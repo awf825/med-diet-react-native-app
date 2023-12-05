@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React from 'react';
 import {
     SafeAreaView,
@@ -9,7 +8,6 @@ import {
     Button,
     View
 } from 'react-native';
-import { BASE_URL } from '../../config';
 import { Formik } from 'formik';
 import { Picker } from '@react-native-picker/picker';
 
@@ -74,7 +72,7 @@ const SurveyForm = ({ questions, _handleSubmit }) => {
                             keyExtractor={item => item.question_id}
                         />
                         <Button
-                            testID="SUBMIT"
+                            testID={"SUBMIT"}
                             onPress={handleSubmit}
                             title="DONE"
                             name="submit"

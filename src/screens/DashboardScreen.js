@@ -8,7 +8,6 @@ import {
   Text,
   StatusBar
 } from 'react-native';
-import CustomButton from '../components/CustomButton/CustomButton';
 // https://www.npmjs.com/package/react-native-circular-progress
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import AuthAxios from '../services/AuthAxios';

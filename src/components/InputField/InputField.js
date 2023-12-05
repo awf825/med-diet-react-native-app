@@ -2,6 +2,7 @@ import React from 'react';
 import {View, Text, TouchableOpacity, TextInput} from 'react-native';
 
 export default function InputField({
+  testID,
   label,
   icon,
   inputType,
@@ -23,6 +24,7 @@ export default function InputField({
       {icon}
       {inputType == 'password' ? (
         <TextInput
+          testID={testID}
           placeholder={label}
           keyboardType={keyboardType}
           style={{flex: 1, paddingVertical: 0}}
@@ -32,6 +34,7 @@ export default function InputField({
         />
       ) : (
         <TextInput
+          testID={testID}
           placeholder={label}
           keyboardType={keyboardType}
           style={{flex: 1, paddingVertical: 0}}

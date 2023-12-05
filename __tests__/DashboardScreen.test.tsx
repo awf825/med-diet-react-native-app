@@ -5,7 +5,7 @@ import {
     test,
     expect
 } from "@jest/globals"
-import DashboardScreen from '../screens/DashboardScreen';
+import DashboardScreen from '../src/screens/DashboardScreen';
 import React, { useState, useContext } from 'react';
 
 // test('should test what goes into the state', () => {  
