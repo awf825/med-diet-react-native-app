@@ -26,7 +26,7 @@ beforeEach(() => {
     fireEvent(loginButton, "onPress");
 })
 
-describe('SurveyForm', async () => {
+test('SurveyForm', async () => {
     const { getByTestId } = render(<AuthProvider><SurveyScreen navigation={undefined} /></AuthProvider>)
     await waitFor(
         () => {

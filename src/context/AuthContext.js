@@ -28,6 +28,25 @@ export const AuthProvider = ({children}) => {
         setIsLoading(false);
     }
 
+    const register = (username, password) => {
+        setIsLoading(true);
+        AuthAxios().post("/api/auth/register", {
+            username,
+            password
+        })
+        .then(resp => {
+            console.log(resp.data)
+            // let userInfo = resp.data.user
+            setUserToken(resp.data.token)
+            // AsyncStorage.setItem('userInfo', resp.data.user)
+            AsyncStorage.setItem('userToken', JSON.stringify(resp.data.token))
+        })
+        .catch(e => {
+            console.log(e)
+        })
+        setIsLoading(false);
+    }
+
     const logout = () => {
         setIsLoading(true);
         setUserToken(null);
@@ -53,7 +72,15 @@ export const AuthProvider = ({children}) => {
     }, []);
 
     return (
-        <AuthContext.Provider value={{login, logout, userToken, isLoading}}>
+        <AuthContext.Provider value={
+            {
+                login, 
+                logout, 
+                userToken, 
+                isLoading,
+                register
+            }
+        }>
             {children}
         </AuthContext.Provider>
     )
