@@ -28,6 +28,23 @@ export const AuthProvider = ({children}) => {
         setIsLoading(false);
     }
 
+    const googleLogin = () => {
+        setIsLoading(true);
+        setUserToken("DUMMY")
+        // AuthAxios().get("/api/auth/google")
+        // .then(resp => {
+        //     console.log(resp.data)
+        //     // let userInfo = resp.data.user
+        //     // setUserToken(resp.data.token)
+        //     // AsyncStorage.setItem('userInfo', resp.data.user)
+        //     // AsyncStorage.setItem('userToken', JSON.stringify(resp.data.token))
+        // })
+        // .catch(e => {
+        //     console.log(e)
+        // })
+        setIsLoading(false);
+    }
+
     const register = (username, password) => {
         setIsLoading(true);
         AuthAxios().post("/api/auth/register", {
@@ -78,7 +95,8 @@ export const AuthProvider = ({children}) => {
                 logout, 
                 userToken, 
                 isLoading,
-                register
+                register,
+                googleLogin
             }
         }>
             {children}

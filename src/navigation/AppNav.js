@@ -5,6 +5,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import AuthStack from './AuthStack.js';
 import { AuthContext } from '../context/AuthContext.js';
 import AppStack from './AppStack.js';
+import linking from '../../linking.js';
 
 export const AppNav = () => {
     const {isLoading, userToken} = useContext(AuthContext)
@@ -18,7 +19,7 @@ export const AppNav = () => {
     }
 
     return (
-      <NavigationContainer>
+      <NavigationContainer linking={linking}>
         { 
             userToken !== null ? 
             <AppStack /> :
