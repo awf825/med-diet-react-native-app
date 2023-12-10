@@ -28,7 +28,7 @@ const DashboardScreen = ({ navigation }) => {
           setIsLoading(false);
         })
         .catch(err => console.log(err))
-      }, 250)
+      }, 500)
     });
   }, [navigation]);
 

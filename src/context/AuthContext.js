@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AuthAxios from '../services/AuthAxios';
 import React, { createContext, useEffect, useState } from 'react';
+import Snackbar from "react-native-snackbar"
 
 export const AuthContext = createContext();
 
@@ -8,22 +9,29 @@ export const AuthProvider = ({children}) => {
     const [isLoading, setIsLoading] = useState(false)
     const [userToken, setUserToken] = useState(null)
     const [userInfo, setUserInfo] = useState(null)
+    const [snackbar, setSnackbar] = useState(null);
 
-    const login = (username, password) => {
+    const login = (user) => {
         setIsLoading(true);
-        AuthAxios().post("/api/auth/login", {
-            username,
-            password
-        })
+        AuthAxios().post("/api/auth/login", user)
         .then(resp => {
             console.log(resp.data)
             // let userInfo = resp.data.user
             setUserToken(resp.data.token)
             // AsyncStorage.setItem('userInfo', resp.data.user)
             AsyncStorage.setItem('userToken', JSON.stringify(resp.data.token))
+            setIsLoading(false);
         })
         .catch(e => {
             console.log(e)
+            setSnackbar(
+                Snackbar.show({
+                    text: e.response.data.message,
+                    duration: Snackbar.LENGTH_LONG,
+                })
+            )
+            // TODO ALERT WITH SNACK BAR THAT SAYS USER DOESN'T EXIST
+            //setIsLoading(false);
         })
         setIsLoading(false);
     }
@@ -85,6 +93,10 @@ export const AuthProvider = ({children}) => {
 
     useEffect(() => {
         isLoggedIn();
+
+        return () => {
+            setSnackbar(null)
+        }
     }, []);
 
     return (
@@ -95,7 +107,8 @@ export const AuthProvider = ({children}) => {
                 userToken, 
                 isLoading,
                 register,
-                googleLogin
+                googleLogin,
+                snackbar
             }
         }>
             {children}

@@ -3,13 +3,14 @@ import {
   SafeAreaView,
   View,
   Text,
-  TextInput,
   TouchableOpacity,
   Linking,
   Platform
 } from 'react-native';
 import SafariView from "react-native-safari-view";
 import { WebView } from "react-native-webview";
+import { Formik, Form, Field } from 'formik';
+import * as Yup from 'yup';
 
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -23,9 +24,7 @@ import InputField from '../components/InputField/InputField';
 import { AuthContext } from '../context/AuthContext';
 
 const LoginScreen = ({ navigation }) => {
-  const { login, googleLogin } = useContext(AuthContext)
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const { login, googleLogin, snackbar } = useContext(AuthContext)
   const [uri, setUri] = useState("");
 
   // Set up Linking
@@ -45,14 +44,14 @@ const LoginScreen = ({ navigation }) => {
     console.log('begin handleOpenUrl')
     // Extract stringified user string out of the URL
     const user = decodeURI(url).match(
-      /userId=([^#]+)\/username=([^#]+)/
+      /userId=([^#]+)\/email=([^#]+)/
     );
     if (Platform.OS === "ios") {
       console.log('url: ', url)
       console.log('platform is ios. Calling dismiss...')
       googleLogin({
         userId: user[1],
-        username: user[2]
+        email: user[2]
       });
       SafariView.dismiss();
     } else {
@@ -75,6 +74,8 @@ const LoginScreen = ({ navigation }) => {
     }
   };
 
+  const _handleSubmit = (values) => login(values);
+
   return (
     <>
       {uri !== "" ? (
@@ -93,10 +94,10 @@ const LoginScreen = ({ navigation }) => {
           <View style={{ paddingHorizontal: 25 }}>
             <View style={{ alignItems: 'center' }}>
               {/* <LoginSVG
-            height={300}
-            width={300}
-            style={{transform: [{rotate: '-5deg'}]}}
-          /> */}
+                      height={300}
+                      width={300}
+                      style={{transform: [{rotate: '-5deg'}]}}
+                    /> */}
             </View>
 
             <Text
@@ -109,106 +110,116 @@ const LoginScreen = ({ navigation }) => {
               }}>
               Login
             </Text>
+            <Formik
+              testID="LOGIN-FORM"
+              validationSchema={Yup.object().shape({
+                email: Yup.string()
+                  .email('Invalid email')
+                  .required('Required'),
+                password: Yup.string()
+                  .required('No password provided.')
+                  .min(8, 'Password is too short - should be 8 chars minimum.')
+              })}
+              initialValues={{
+                email: "",
+                password: ""
+              }}
+              onSubmit={values => _handleSubmit(values)}
+            >
+              {
+                ({ errors, touched, setFieldValue, handleSubmit }) => (
+                  <>
+                    <InputField
+                      testID={"EMAIL"}
+                      label={'Email'}
+                      name={'email'}
+                      autoCapitalize={'none'}
+                      keyboardType="default"
+                      onChangeText={text => setFieldValue('email', text)}
+                    />
+                    <Text>{touched.email ? errors.email : ""}</Text>
+                    <InputField
+                      testID={"PASSWORD"}
+                      label={'Password'}
+                      name={'password'}
+                      inputType="password"
+                      fieldButtonLabel={"Forgot?"}
+                      fieldButtonFunction={() => { }}
+                      onChangeText={text => setFieldValue('password', text)}
+                    />
+                    <Text>{touched.password ? errors.password : ""}</Text>
 
-            <InputField
-              testID={"EMAIL"}
-              label={'Email ID'}
-              icon={
-                <MaterialIcons
-                  name="alternate-email"
-                  size={20}
-                  color="#666"
-                  style={{ marginRight: 5 }}
-                />
+                    <CustomButton testID="LOGIN" label={"Login"} onPress={handleSubmit} />
+                  </>
+                )
               }
-              keyboardType="default"
-              value={username}
-              onChangeText={text => setUsername(text)}
-            />
-
-            <InputField
-              testID={"PASSWORD"}
-              label={'Password'}
-              // icon={
-              //   <Ionicons
-              //   name="ios-lock-closed-outline"
-              //   size={20}
-              //   color="#666"
-              //   style={{marginRight: 5}}
-              // />
-              // }
-              inputType="password"
-              fieldButtonLabel={"Forgot?"}
-              fieldButtonFunction={() => { }}
-              value={password}
-              onChangeText={text => setPassword(text)}
-            />
-
-            <CustomButton testID="LOGIN" label={"Login"} onPress={() => {
-              login(username, password);
-            }} />
-
-            <Text style={{ textAlign: 'center', color: '#666', marginBottom: 30 }}>
-              Or, login with ...
-            </Text>
-
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                marginBottom: 30,
-              }}>
-              <TouchableOpacity
-                onPress={() => openUrl(`http://localhost:8080/api/auth/google`)}
-                style={{
-                  borderColor: '#ddd',
-                  borderWidth: 2,
-                  borderRadius: 10,
-                  paddingHorizontal: 30,
-                  paddingVertical: 10,
-                }}>
-                <Text>GOOGLE</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => { }}
-                style={{
-                  borderColor: '#ddd',
-                  borderWidth: 2,
-                  borderRadius: 10,
-                  paddingHorizontal: 30,
-                  paddingVertical: 10,
-                }}>
-                {/* <FacebookSVG height={24} width={24} /> */}
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => { }}
-                style={{
-                  borderColor: '#ddd',
-                  borderWidth: 2,
-                  borderRadius: 10,
-                  paddingHorizontal: 30,
-                  paddingVertical: 10,
-                }}>
-                {/* <TwitterSVG height={24} width={24} /> */}
-              </TouchableOpacity>
-            </View>
-
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'center',
-                marginBottom: 30,
-              }}>
-              <Text>New to the app?</Text>
-              <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-                <Text style={{ color: '#AD40AF', fontWeight: '700' }}> Register</Text>
-              </TouchableOpacity>
-            </View>
+            </Formik>
           </View>
+
+          <Text style={{ textAlign: 'center', color: '#666', marginBottom: 30 }}>
+            Or, login with ...
+          </Text>
+
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              marginBottom: 30,
+            }}>
+            <TouchableOpacity
+              onPress={() => openUrl(`http://localhost:8080/api/auth/google`)}
+              style={{
+                borderColor: '#ddd',
+                borderWidth: 2,
+                borderRadius: 10,
+                paddingHorizontal: 30,
+                paddingVertical: 10,
+              }}>
+              <Text>GOOGLE</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => { }}
+              style={{
+                borderColor: '#ddd',
+                borderWidth: 2,
+                borderRadius: 10,
+                paddingHorizontal: 30,
+                paddingVertical: 10,
+              }}>
+              {/* <FacebookSVG height={24} width={24} /> */}
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => { }}
+              style={{
+                borderColor: '#ddd',
+                borderWidth: 2,
+                borderRadius: 10,
+                paddingHorizontal: 30,
+                paddingVertical: 10,
+              }}>
+              {/* <TwitterSVG height={24} width={24} /> */}
+            </TouchableOpacity>
+          </View>
+
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'center',
+              marginBottom: 30,
+            }}>
+            <Text>New to the app?</Text>
+            <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+              <Text style={{ color: '#AD40AF', fontWeight: '700' }}> Register</Text>
+            </TouchableOpacity>
+          </View>
+
+          {snackbar}
+
         </SafeAreaView>
-      )}
+      )
+      }
     </>
-  );
+  )
 };
 
 export default LoginScreen;

@@ -5,10 +5,13 @@ export default function InputField({
   testID,
   label,
   icon,
+  name,
+  autoCapitalize,
   inputType,
   keyboardType,
   fieldButtonLabel,
   fieldButtonFunction,
+  handleBlur,
   value,
   onChangeText
 }) {
@@ -24,6 +27,9 @@ export default function InputField({
       {icon}
       {inputType == 'password' ? (
         <TextInput
+          autoCapitalize={autoCapitalize}
+          handleBlur={handleBlur}
+          name={name}
           testID={testID}
           placeholder={label}
           keyboardType={keyboardType}
@@ -34,6 +40,9 @@ export default function InputField({
         />
       ) : (
         <TextInput
+          autoCapitalize={autoCapitalize}
+          handleBlur={handleBlur}
+          name={name}
           testID={testID}
           placeholder={label}
           keyboardType={keyboardType}
