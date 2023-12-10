@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useContext } from 'react';
 import {
   Text,
+  View,
+  ActivityIndicator
 } from 'react-native';
 import SurveyForm from '../components/Forms/SurveyForm';
 import { AuthContext } from '../context/AuthContext';
@@ -9,13 +11,20 @@ import AuthAxios from '../services/AuthAxios';
 const SurveyScreen = ({ navigation }) => {
     const { userToken } = useContext(AuthContext)
     const [questions, setQuestions] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
+        setIsLoading(true)
         AuthAxios(userToken).get("/api/questions/")
         .then(resp => {
             setQuestions(resp.data)
+            setIsLoading(false);
         })
         .catch(err => console.log(err))
+
+        return () => {
+            setIsLoading(false);
+        }
     }, [])
 
     const _handleSubmit = (values) => {
@@ -31,17 +40,20 @@ const SurveyScreen = ({ navigation }) => {
         .then(resp => {
             if (resp.data.success) {
                 navigation.navigate('Dashboard')
+                // setIsLoading(false);
             }
         })
         .catch(err => console.log(err))
     }
 
     return (
-        questions.length > 0 
+        isLoading
         ?
-        <SurveyForm questions={questions} _handleSubmit={_handleSubmit}/>
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center' }} >
+            <ActivityIndicator size={'large'}/>
+        </View>
         :
-        <Text>LOADING</Text>
+        <SurveyForm questions={questions} _handleSubmit={_handleSubmit}/>
     );
 };
 

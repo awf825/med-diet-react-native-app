@@ -30,14 +30,14 @@ const LoginScreen = ({ navigation }) => {
 
   // Set up Linking
   useEffect(() => {
-    Linking.addEventListener("url", (url) => handleOpenURL(url.url));
+    const listener = Linking.addEventListener("url", (url) => handleOpenURL(url.url));
     Linking.getInitialURL().then((url) => {
       if (url) {
         handleOpenURL({ url });
       }
     });
     return () => {
-      Linking.removeAllListeners("url");
+      listener.remove();
     };
   }, []);
 

@@ -6,7 +6,8 @@ import {
   FlatList,
   StyleSheet,
   Text,
-  StatusBar
+  StatusBar,
+  ActivityIndicator
 } from 'react-native';
 // https://www.npmjs.com/package/react-native-circular-progress
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
@@ -15,12 +16,19 @@ import AuthAxios from '../services/AuthAxios';
 const DashboardScreen = ({ navigation }) => {
   const { userToken } = useContext(AuthContext)
   const [submissions, setSubmissions] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     navigation.addListener('focus', () => {
-      AuthAxios(userToken).get("/api/submissions/")
-      .then(resp => { setSubmissions(resp.data) })
-      .catch(err => console.log(err))
+      setIsLoading(true)
+      setTimeout(() => {
+        AuthAxios(userToken).get("/api/submissions/")
+        .then(resp => { 
+          setSubmissions(resp.data) 
+          setIsLoading(false);
+        })
+        .catch(err => console.log(err))
+      }, 250)
     });
   }, [navigation]);
 
@@ -41,11 +49,19 @@ const DashboardScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <FlatList
-        data={submissions}
-        renderItem={_renderItem}
-        keyExtractor={item => item.submission_id}
-      />
+      {
+        isLoading 
+        ?
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center' }} >
+            <ActivityIndicator size={'large'}/>
+        </View>
+        :
+        <FlatList
+          data={submissions}
+          renderItem={_renderItem}
+          keyExtractor={item => item.submission_id}
+        />
+      }
     </SafeAreaView>
   );
 };
