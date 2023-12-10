@@ -45,12 +45,15 @@ const LoginScreen = ({ navigation }) => {
     console.log('begin handleOpenUrl')
     // Extract stringified user string out of the URL
     const user = decodeURI(url).match(
-      /firstName=([^#]+)\/lastName=([^#]+)\/email=([^#]+)/
+      /userId=([^#]+)\/username=([^#]+)/
     );
     if (Platform.OS === "ios") {
       console.log('url: ', url)
       console.log('platform is ios. Calling dismiss...')
-      googleLogin();
+      googleLogin({
+        userId: user[1],
+        username: user[2]
+      });
       SafariView.dismiss();
     } else {
       setUri("");
