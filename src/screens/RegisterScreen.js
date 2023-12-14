@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, { useContext, useState } from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -11,6 +11,9 @@ import {
 import InputField from '../components/InputField/InputField';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
+import { Formik } from 'formik';
+import * as Yup from 'yup';
+
 // import DatePicker from 'react-native-date-picker';
 // import Ionicons from 'react-native-vector-icons/Ionicons';
 // import RegistrationSVG from '../assets/images/auth/registration.svg';
@@ -21,21 +24,17 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import CustomButton from '../components/CustomButton/CustomButton';
 import { AuthContext } from '../context/AuthContext';
 
-const RegisterScreen = ({navigation}) => {
-  const { register } = useContext(AuthContext)
+const RegisterScreen = ({ navigation }) => {
+  const { register, snackbar } = useContext(AuthContext)
 
-  const [date, setDate] = useState(new Date());
-  const [open, setOpen] = useState(false);
-  const [dobLabel, setDobLabel] = useState('Date of Birth');
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const _handleSubmit = (values) => register(values);
 
   return (
-    <SafeAreaView style={{flex: 1, justifyContent: 'center'}}>
+    <SafeAreaView style={{ flex: 1, justifyContent: 'center' }}>
       <ScrollView
         showsVerticalScrollIndicator={false}
-        style={{paddingHorizontal: 25}}>
-        <View style={{alignItems: 'center'}}>
+        style={{ paddingHorizontal: 25 }}>
+        <View style={{ alignItems: 'center' }}>
           {/* <RegistrationSVG
             height={300}
             width={300}
@@ -61,7 +60,7 @@ const RegisterScreen = ({navigation}) => {
             marginBottom: 30,
           }}>
           <TouchableOpacity
-            onPress={() => {}}
+            onPress={() => { }}
             style={{
               borderColor: '#ddd',
               borderWidth: 2,
@@ -72,7 +71,7 @@ const RegisterScreen = ({navigation}) => {
             {/* <GoogleSVG height={24} width={24} /> */}
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => {}}
+            onPress={() => { }}
             style={{
               borderColor: '#ddd',
               borderWidth: 2,
@@ -83,7 +82,7 @@ const RegisterScreen = ({navigation}) => {
             {/* <FacebookSVG height={24} width={24} /> */}
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => {}}
+            onPress={() => { }}
             style={{
               borderColor: '#ddd',
               borderWidth: 2,
@@ -95,94 +94,70 @@ const RegisterScreen = ({navigation}) => {
           </TouchableOpacity>
         </View>
 
-        <Text style={{textAlign: 'center', color: '#666', marginBottom: 30}}>
+        <Text style={{ textAlign: 'center', color: '#666', marginBottom: 30 }}>
           Or, register with email ...
         </Text>
 
-        <InputField
-          label={'Email ID'}
-          icon={
-            <MaterialIcons
-              name="alternate-email"
-              size={20}
-              color="#666"
-              style={{marginRight: 5}}
-            />
+        <Formik
+          testID="LOGIN-FORM"
+          validationSchema={Yup.object().shape({
+            email: Yup.string()
+              .email('Invalid email')
+              .required('Required'),
+            password: Yup.string()
+              .matches(
+                /(?=.*?[A-Za-z])(?=.*?[0-9]|.*?[$@$!%*#?&.])[A-Za-z0-9$@$!%*#?&]{8,}/,
+                "Your password must be at least 8 characters and must contain at least one digit and/or special character."
+              )
+              .required("Password is required"),
+              passwordConf: Yup.string()
+              .required("Password Confirmation is required.")
+              .when("password", {
+                is: (val) => (val && val.length > 0 ? true : false),
+                then: () => Yup.string().oneOf(
+                  [Yup.ref("password")],
+                  "Password and Password Confirmation must match."
+                ),
+              })
+          })}
+          initialValues={{
+            email: "",
+            password: "",
+            passwordConf: ""
+          }}
+          onSubmit={values => _handleSubmit(values)}
+        >
+          {
+            ({ errors, touched, setFieldValue, handleSubmit }) => (
+              <>
+                <InputField
+                  label={'Email'}
+                  name={'email'}
+                  autoCapitalize={'none'}
+                  keyboardType="default" xw
+                  onChangeText={text => setFieldValue('email', text)}
+                />
+                <Text>{touched.email ? errors.email : ""}</Text>
+                <InputField
+                  label={'Password'}
+                  name={'password'}
+                  inputType="password"
+                  onChangeText={text => setFieldValue('password', text)}
+                />
+                <Text>{touched.password ? errors.password : ""}</Text>
+                <InputField
+                  label={'Password Confirmation'}
+                  name={'passwordConf'}
+                  inputType="password"
+                  onChangeText={text => setFieldValue('passwordConf', text)}
+                />
+                <Text>{touched.passwordConf ? errors.passwordConf : ""}</Text>
+                <CustomButton testID="REGISTER" label={"Register"} onPress={handleSubmit} />
+              </>
+            )
           }
-          value={username}
-          onChangeText={text => setUsername(text)}
-          keyboardType="email-address"
-        />
+        </Formik>
 
-        <InputField
-          label={'Password'}
-          // icon={
-          //   <Ionicons
-          //     name="ios-lock-closed-outline"
-          //     size={20}
-          //     color="#666"
-          //     style={{marginRight: 5}}
-          //   />
-          // }
-          value={password}
-          onChangeText={text => setPassword(text)}
-          inputType="password"
-        />
-
-        <InputField
-          label={'Confirm Password'}
-          // icon={
-          //   <Ionicons
-          //     name="ios-lock-closed-outline"
-          //     size={20}
-          //     color="#666"
-          //     style={{marginRight: 5}}
-          //   />
-          // }
-          inputType="password"
-        />
-
-        {/* <View
-          style={{
-            flexDirection: 'row',
-            borderBottomColor: '#ccc',
-            borderBottomWidth: 1,
-            paddingBottom: 8,
-            marginBottom: 30,
-          }}>
-          <Ionicons
-            name="calendar-outline"
-            size={20}
-            color="#666"
-            style={{marginRight: 5}}
-          />
-          <TouchableOpacity onPress={() => setOpen(true)}>
-            <Text style={{color: '#666', marginLeft: 5, marginTop: 5}}>
-              {dobLabel}
-            </Text>
-          </TouchableOpacity>
-        </View> */}
-
-        {/* <DatePicker
-          modal
-          open={open}
-          date={date}
-          mode={'date'}
-          maximumDate={new Date('2005-01-01')}
-          minimumDate={new Date('1980-01-01')}
-          onConfirm={date => {
-            setOpen(false);
-            setDate(date);
-            setDobLabel(date.toDateString());
-          }}
-          onCancel={() => {
-            setOpen(false);
-          }}
-        /> */}
-
-        <CustomButton testID="REGISTER" label={"Register"} onPress={() => {
-          register(username, password);
-        }} />
 
         <View
           style={{
@@ -192,10 +167,11 @@ const RegisterScreen = ({navigation}) => {
           }}>
           <Text>Already registered?</Text>
           <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Text style={{color: '#AD40AF', fontWeight: '700'}}> Login</Text>
+            <Text style={{ color: '#AD40AF', fontWeight: '700' }}> Login</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
+      {snackbar}
     </SafeAreaView>
   );
 };

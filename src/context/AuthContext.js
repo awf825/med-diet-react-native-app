@@ -13,27 +13,27 @@ export const AuthProvider = ({children}) => {
 
     const login = (user) => {
         setIsLoading(true);
-        AuthAxios().post("/api/auth/login", user)
-        .then(resp => {
-            console.log(resp.data)
-            // let userInfo = resp.data.user
-            setUserToken(resp.data.token)
-            // AsyncStorage.setItem('userInfo', resp.data.user)
-            AsyncStorage.setItem('userToken', JSON.stringify(resp.data.token))
-            setIsLoading(false);
-        })
-        .catch(e => {
-            console.log(e)
-            setSnackbar(
-                Snackbar.show({
-                    text: e.response.data.message,
-                    duration: Snackbar.LENGTH_LONG,
-                })
-            )
-            // TODO ALERT WITH SNACK BAR THAT SAYS USER DOESN'T EXIST
-            //setIsLoading(false);
-        })
-        setIsLoading(false);
+        setTimeout(() => {
+            AuthAxios().post("/api/auth/login", user)
+            .then(resp => {
+                console.log(resp.data)
+                // let userInfo = resp.data.user
+                setUserToken(resp.data.token)
+                // AsyncStorage.setItem('userInfo', resp.data.user)
+                AsyncStorage.setItem('userToken', JSON.stringify(resp.data.token))
+                setIsLoading(false);
+            })
+            .catch(e => {
+                console.log(e)
+                setSnackbar(
+                    Snackbar.show({
+                        text: e.response.data.message,
+                        duration: Snackbar.LENGTH_LONG,
+                    })
+                )
+                setIsLoading(false);
+            })
+        }, 2000)
     }
 
     const googleLogin = (user) => {
@@ -52,23 +52,29 @@ export const AuthProvider = ({children}) => {
         setIsLoading(false);
     }
 
-    const register = (username, password) => {
+    const register = (user) => {
         setIsLoading(true);
-        AuthAxios().post("/api/auth/register", {
-            username,
-            password
-        })
-        .then(resp => {
-            console.log(resp.data)
-            // let userInfo = resp.data.user
-            setUserToken(resp.data.token)
-            // AsyncStorage.setItem('userInfo', resp.data.user)
-            AsyncStorage.setItem('userToken', JSON.stringify(resp.data.token))
-        })
-        .catch(e => {
-            console.log(e)
-        })
-        setIsLoading(false);
+        setTimeout(() => {
+            AuthAxios().post("/api/auth/register", user)
+            .then(resp => {
+                console.log(resp.data)
+                // let userInfo = resp.data.user
+                setUserToken(resp.data.token)
+                // AsyncStorage.setItem('userInfo', resp.data.user)
+                AsyncStorage.setItem('userToken', JSON.stringify(resp.data.token))
+                setIsLoading(false);
+            })
+            .catch(e => {
+                console.log(e)
+                setSnackbar(
+                    Snackbar.show({
+                        text: e.response.data.message,
+                        duration: Snackbar.LENGTH_LONG,
+                    })
+                )
+                setIsLoading(false);
+            })
+        }, 2000)
     }
 
     const logout = () => {
