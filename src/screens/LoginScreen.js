@@ -5,12 +5,14 @@ import {
   Text,
   TouchableOpacity,
   Linking,
-  Platform
+  Platform,
+  StyleSheet
 } from 'react-native';
 import SafariView from "react-native-safari-view";
 import { WebView } from "react-native-webview";
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
+import { AppleButton } from "@invertase/react-native-apple-authentication"
 
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -24,7 +26,14 @@ import InputField from '../components/InputField/InputField';
 import { AuthContext } from '../context/AuthContext';
 
 const LoginScreen = ({ navigation }) => {
-  const { login, googleLogin, snackbar } = useContext(AuthContext)
+  const { 
+    login, 
+    googleLogin, 
+    snackbar, 
+    credentialStateForUser,
+    updateCredentialStateForUser,
+    onAppleButtonPress
+  } = useContext(AuthContext)
   const [uri, setUri] = useState("");
 
   // Set up Linking
@@ -99,6 +108,8 @@ const LoginScreen = ({ navigation }) => {
                       style={{transform: [{rotate: '-5deg'}]}}
                     /> */}
             </View>
+
+            <Text>{credentialStateForUser}</Text>
 
             <Text
               style={{
@@ -177,17 +188,13 @@ const LoginScreen = ({ navigation }) => {
               }}>
               <Text>GOOGLE</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => { }}
-              style={{
-                borderColor: '#ddd',
-                borderWidth: 2,
-                borderRadius: 10,
-                paddingHorizontal: 30,
-                paddingVertical: 10,
-              }}>
-              {/* <FacebookSVG height={24} width={24} /> */}
-            </TouchableOpacity>
+            <AppleButton
+              style={styles.appleButton}
+              cornerRadius={5}
+              buttonStyle={AppleButton.Style.WHITE}
+              buttonType={AppleButton.Type.CONTINUE}
+              onPress={() => onAppleButtonPress(updateCredentialStateForUser)}
+            />
             <TouchableOpacity
               onPress={() => { }}
               style={{
@@ -221,5 +228,13 @@ const LoginScreen = ({ navigation }) => {
     </>
   )
 };
+
+const styles = StyleSheet.create({
+  appleButton: {
+    width: 200,
+    height: 60,
+    margin: 10,
+  },
+})
 
 export default LoginScreen;
