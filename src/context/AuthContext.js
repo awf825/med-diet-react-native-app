@@ -112,7 +112,7 @@ export const AuthProvider = ({ children }) => {
 
     /* APPLE */
     const onAppleButtonPress = async (updateCredentialStateForUser) => {
-        console.warn('Beginning Apple Authentication');
+        console.log('Beginning Apple Authentication');
 
         // start a login request
         try {
@@ -126,30 +126,58 @@ export const AuthProvider = ({ children }) => {
             const {
                 user,
                 email,
-                nonce,
-                identityToken,
-                realUserStatus /* etc */,
+                identityToken
             } = appleAuthRequestResponse;
 
             fetchAndUpdateAppleCredentialState(updateCredentialStateForUser).catch(error =>
                 updateCredentialStateForUser(`Error: ${error.code}`),
             );
 
+            console.log('appleAuthRequestResponse: ', appleAuthRequestResponse)
             if (identityToken) {
-                // instead of storing user to state, get a web token with standard auth
-                // and go off of that instead of appleUser (line 163)
-                setAppleUser(user);
-                // e.g. sign in with Firebase Auth using `nonce` & `identityToken`
-                // console.log(nonce, identityToken);
+                if (email) {
+                    console.log('payload user, email: ', user, email)
+                    AuthAxios().post("/api/auth/appleRegister", {
+                        apple_user_id: user,
+                        email: email
+                    })
+                    .then(resp => {
+                        console.log(resp.data)
+                        // let userInfo = resp.data.user
+                        setUserToken(resp.data.token)
+                        setAppleUser(user);
+                        AsyncStorage.setItem('userToken', JSON.stringify(resp.data.token))
+                    })
+                    .catch(e => {
+                        console.log(e)
+                    })
+                } else {      
+                    AuthAxios().post("/api/auth/appleLogin", {
+                        apple_user_id: user,
+                    })
+                    .then(resp => {
+                        console.log(resp.data)
+                        // let userInfo = resp.data.user
+                        setUserToken(resp.data.token)
+                        setAppleUser(user);
+                        // AsyncStorage.setItem('userInfo', resp.data.user)
+                        AsyncStorage.setItem('userToken', JSON.stringify(resp.data.token))
+                    })
+                    .catch(e => {
+                        console.log(e)
+                    })         
+                }
             } else {
-                // no token - failed sign-in?
+                setSnackbar(
+                    Snackbar.show({
+                        text: "Could not authenticate with Apple ID.",
+                        duration: Snackbar.LENGTH_LONG,
+                    })
+                )
+                setIsLoading(false);
             }
 
-            if (realUserStatus === appleAuth.UserStatus.LIKELY_REAL) {
-                console.log("I'm a real person!");
-            }
-
-            console.warn(`Apple Authentication Completed, ${user}, ${email}`);
+            console.log(`Apple Authentication Completed, ${user}, ${email}`);
         } catch (error) {
             if (error.code === appleAuth.Error.CANCELED) {
                 console.warn('User canceled Apple Sign in.');
