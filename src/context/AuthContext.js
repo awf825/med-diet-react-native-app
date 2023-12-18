@@ -126,6 +126,7 @@ export const AuthProvider = ({ children }) => {
             const {
                 user,
                 email,
+                fullName,
                 identityToken
             } = appleAuthRequestResponse;
 
@@ -134,11 +135,14 @@ export const AuthProvider = ({ children }) => {
             );
 
             console.log('appleAuthRequestResponse: ', appleAuthRequestResponse)
+
             if (identityToken) {
                 if (email) {
                     console.log('payload user, email: ', user, email)
                     AuthAxios().post("/api/auth/appleRegister", {
                         apple_user_id: user,
+                        first_name: fullName.givenName,
+                        last_name: fullName.familyName,
                         email: email
                     })
                     .then(resp => {
