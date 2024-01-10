@@ -2,13 +2,19 @@ import React, { useContext } from 'react';
 import { View, ActivityIndicator} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native'
 
-import AuthStack from './AuthStack.js';
 import { AuthContext } from '../context/AuthContext.js';
+
+import AuthStack from './AuthStack.js';
 import AppStack from './AppStack.js';
+import PreappStack from './PreappStack.js'
 import linking from '../../linking.js';
 
 export const AppNav = () => {
-    const {isLoading, userToken} = useContext(AuthContext)
+    const {
+        isLoading, 
+        userToken,
+        userInfo
+    } = useContext(AuthContext)
 
     return (
         <>
@@ -20,7 +26,9 @@ export const AppNav = () => {
                 <NavigationContainer linking={linking}>
                 { 
                     userToken !== null ? 
+                    userToken && userInfo?.ffq_complete > 0 ?
                     <AppStack /> :
+                    <PreappStack /> :
                     <AuthStack />
                 }
                 </NavigationContainer>

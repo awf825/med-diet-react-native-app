@@ -1,6 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AuthAxios from '../services/AuthAxios';
-import React, { createContext, useEffect, useState } from 'react';
+import React, { 
+    createContext, 
+    useEffect, 
+    useState,
+    useMemo 
+} from 'react';
 import Snackbar from "react-native-snackbar"
 import { appleAuth } from '@invertase/react-native-apple-authentication';
 
@@ -20,10 +25,10 @@ export const AuthProvider = ({ children }) => {
         setTimeout(() => {
             AuthAxios().post("/api/auth/login", user)
                 .then(resp => {
-                    console.log(resp.data)
-                    // let userInfo = resp.data.user
+                    console.log('resp.data: ', resp.data)
                     setUserToken(resp.data.token)
-                    // AsyncStorage.setItem('userInfo', resp.data.user)
+                    setUserInfo(resp.data.user)
+                    AsyncStorage.setItem('userInfo', JSON.stringify(resp.data.user))
                     AsyncStorage.setItem('userToken', JSON.stringify(resp.data.token))
                     setIsLoading(false);
                 })
@@ -45,10 +50,9 @@ export const AuthProvider = ({ children }) => {
         setTimeout(() => {
             AuthAxios().post("/api/auth/register", user)
                 .then(resp => {
-                    console.log(resp.data)
-                    // let userInfo = resp.data.user
                     setUserToken(resp.data.token)
-                    // AsyncStorage.setItem('userInfo', resp.data.user)
+                    setUserInfo(resp.data.user)
+                    AsyncStorage.setItem('userInfo', JSON.stringify(resp.data.user))
                     AsyncStorage.setItem('userToken', JSON.stringify(resp.data.token))
                     setIsLoading(false);
                 })
@@ -68,7 +72,7 @@ export const AuthProvider = ({ children }) => {
     const logout = () => {
         setIsLoading(true);
         setUserToken(null);
-        // AsyncStorage.removeItem('userInfo', resp.data.user)
+        AsyncStorage.removeItem('userInfo')
         AsyncStorage.removeItem('userToken')
         setIsLoading(false)
     }
@@ -76,7 +80,6 @@ export const AuthProvider = ({ children }) => {
     const isLoggedIn = async () => {
         try {
             setIsLoading(true);
-            // AsyncStorage.getItem('userInfo', resp.data.user)
             let userToken = await AsyncStorage.getItem('userToken');
             setUserToken(userToken)
             setIsLoading(false);
@@ -98,10 +101,9 @@ export const AuthProvider = ({ children }) => {
         setIsLoading(true);
         AuthAxios().post("/api/auth/googleLogin", user)
             .then(resp => {
-                console.log(resp.data)
-                // let userInfo = resp.data.user
                 setUserToken(resp.data.token)
-                // AsyncStorage.setItem('userInfo', resp.data.user)
+                setUserInfo(resp.data.user)
+                AsyncStorage.setItem('userInfo', JSON.stringify(resp.data.user))
                 AsyncStorage.setItem('userToken', JSON.stringify(resp.data.token))
             })
             .catch(e => {
@@ -120,8 +122,6 @@ export const AuthProvider = ({ children }) => {
                 requestedOperation: appleAuth.Operation.LOGIN,
                 requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
             });
-
-            // console.log('appleAuthRequestResponse', appleAuthRequestResponse);
 
             const {
                 user,
@@ -146,10 +146,10 @@ export const AuthProvider = ({ children }) => {
                         email: email
                     })
                     .then(resp => {
-                        console.log(resp.data)
-                        // let userInfo = resp.data.user
+                        setUserInfo(resp.data.user)
                         setUserToken(resp.data.token)
                         setAppleUser(user);
+                        AsyncStorage.setItem('userInfo', JSON.stringify(resp.data.user))
                         AsyncStorage.setItem('userToken', JSON.stringify(resp.data.token))
                     })
                     .catch(e => {
@@ -161,10 +161,10 @@ export const AuthProvider = ({ children }) => {
                     })
                     .then(resp => {
                         console.log(resp.data)
-                        // let userInfo = resp.data.user
                         setUserToken(resp.data.token)
+                        setUserInfo(resp.data.user)
                         setAppleUser(user);
-                        // AsyncStorage.setItem('userInfo', resp.data.user)
+                        AsyncStorage.setItem('userInfo', JSON.stringify(resp.data.user))
                         AsyncStorage.setItem('userToken', JSON.stringify(resp.data.token))
                     })
                     .catch(e => {
@@ -232,6 +232,20 @@ export const AuthProvider = ({ children }) => {
         }
     }, []);
 
+    // const providerObj = useMemo(() => (
+    //     {
+    //         login,
+    //         logout,
+    //         userToken,
+    //         isLoading,
+    //         register,
+    //         googleLogin,
+    //         snackbar,
+    //         onAppleButtonPress,
+    //         credentialStateForUser,
+    //         updateCredentialStateForUser
+    //     }
+    // ), [])
 
     return (
         <AuthContext.Provider value={
@@ -239,6 +253,7 @@ export const AuthProvider = ({ children }) => {
                 login,
                 logout,
                 userToken,
+                userInfo,
                 isLoading,
                 register,
                 googleLogin,
