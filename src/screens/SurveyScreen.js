@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
 import {
-  Text,
   View,
   ActivityIndicator
 } from 'react-native';

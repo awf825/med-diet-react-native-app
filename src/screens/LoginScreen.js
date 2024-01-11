@@ -14,8 +14,8 @@ import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { AppleButton } from "@invertase/react-native-apple-authentication"
 
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+// import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+// import Ionicons from 'react-native-vector-icons/Ionicons';
 
 // import LoginSVG from '../assets/images/misc/login.svg';
 // import FacebookSVG from '../assets/images/misc/facebook.svg';
