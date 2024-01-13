@@ -1,16 +1,10 @@
 import React, { useEffect, useState, useContext } from 'react';
-import {
-    Text,
-    View,
-    ActivityIndicator
-} from 'react-native';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import FFQForm from '../components/Forms/FFQForm';
-import CustomButton from '../components/CustomButton/CustomButton';
 import { AuthContext } from '../context/AuthContext';
 import AuthAxios from '../services/AuthAxios';
 
-const FFQFormScreen = (props) => {
+const FFQFormScreen = ({ navigation }) => {
     const { userToken, logout } = useContext(AuthContext)
     const [questions, setQuestions] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -19,7 +13,6 @@ const FFQFormScreen = (props) => {
         setIsLoading(true)
         AuthAxios(userToken).get("/api/questions/")
         .then(resp => {
-            console.log('resp.data: ', resp.data)
             setQuestions(resp.data)
         })
         .catch(err => console.log(err))
@@ -31,7 +24,29 @@ const FFQFormScreen = (props) => {
     }, [])
 
     const _handleSubmit = (values) => {
-        console.log('values: ', values)
+        AuthAxios(userToken).post(
+            "/api/submissions/submit",
+            questions.map((q) => {
+                return {
+                    ...q,
+                    answer_score: Number(values[q.field_code])
+                }
+            })
+        )
+        .then(async resp => {
+            console.log('resp.data: ', resp.data)
+            if (resp.data.success) {
+                const userInfo = await AsyncStorage.getItem('userInfo');
+                const userParsed = JSON.parse(userInfo);
+                const newUserInfo = {
+                    ...userParsed,
+                    ffq_complete: 1
+                }
+                await AsyncStorage.setItem('userInfo', JSON.stringify(newUserInfo));
+                navigation.navigate('Drawer')
+            }
+        })
+        .catch(err => console.log(err))
     }
 
     return (
@@ -41,15 +56,9 @@ const FFQFormScreen = (props) => {
                 ?
                 <FFQForm questions={questions} _handleSubmit={_handleSubmit} />
                 :
-                <CustomButton label={"Logout"} onPress={logout} />
+                null
             }
         </>
-        // isLoading 
-        // ?
-        // <View style={{flex: 1, justifyContent: 'center', alignItems: 'center' }} >
-        //     <ActivityIndicator size={'large'}/>
-        // </View>
-        // :
     );
 };
 

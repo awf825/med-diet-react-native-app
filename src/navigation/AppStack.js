@@ -1,4 +1,4 @@
-import React, { useContext} from 'react';
+import React, { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 
 import { 
@@ -7,15 +7,17 @@ import {
   DrawerItemList,
   DrawerItem
 } from '@react-navigation/drawer';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 const Drawer = createDrawerNavigator();
+const Stack = createNativeStackNavigator();
 
 import SurveyScreen from '../screens/SurveyScreen';
 import DashboardScreen from '../screens/DashboardScreen';
-
+import FFQFormScreen from '../screens/FFQFormScreen';
 
 const AppStack = () => {
-    const { logout } = useContext(AuthContext)
-
+    const { logout, userInfo } = useContext(AuthContext)
+  
     const CustomDrawerContent = (props) => {
       return (
         <DrawerContentScrollView {...props}>
@@ -25,8 +27,8 @@ const AppStack = () => {
       );
     }
 
-    return (
-        // screenOptions props: https://reactnavigation.org/docs/drawer-navigator/#title
+    const _Drawer = () => {
+      return (
         <Drawer.Navigator
           screenOptions={{
             drawerActiveTintColor: "red"
@@ -36,6 +38,19 @@ const AppStack = () => {
           <Drawer.Screen name="Dashboard" component={DashboardScreen} />
           <Drawer.Screen name="Survey" component={SurveyScreen} />
         </Drawer.Navigator>
+      );
+    }
+
+    return (
+        // screenOptions props: https://reactnavigation.org/docs/drawer-navigator/#title
+        <Stack.Navigator initialRouteName={userInfo?.ffq_complete>0 ? "Drawer" : "FFQ"}>
+          <Stack.Screen
+            name="Drawer"
+            component={_Drawer}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen name="FFQ" component={FFQFormScreen} />
+        </Stack.Navigator>
     );
 }
 

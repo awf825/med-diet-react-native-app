@@ -7,12 +7,13 @@ import {
     Text,
     Button,
     View,
-    Input
 } from 'react-native';
-import { Formik, useFormik } from 'formik';
+import { useFormik, ErrorMessage } from 'formik';
+import * as yup from 'yup';
 import CustomButton from '../CustomButton/CustomButton';
 import { AuthContext } from '../../context/AuthContext';
 import { RadioButton } from 'react-native-paper';
+
 
 const getDynamicFormValues = (questions) => {
     return questions.reduce(
@@ -29,14 +30,26 @@ const getDynamicFormValues = (questions) => {
 }
 
 const FFQForm = ({ questions, _handleSubmit }) => {
-    const { userToken, logout } = useContext(AuthContext)
-
+    const { logout } = useContext(AuthContext)
+    
     const formik = useFormik({
         initialValues: getDynamicFormValues(questions),
+        validationSchema: yup.object().shape(
+            questions.reduce(
+                (prev, curr) => {
+                    return Object.assign(
+                        prev,
+                        {
+                            [curr.field_code]: yup.string().min(1).required("All fields are required.")
+                        }
+                    )
+                },
+                {}
+            )
+        ),
+        validateOnChange: false,
         onSubmit: values => _handleSubmit(values)
     });
-
-    console.log('formik.values', formik.values)
 
     return (
         <SafeAreaView style={{ justifyContent:'center',alignContent:'center', flex:1}} >
@@ -53,7 +66,7 @@ const FFQForm = ({ questions, _handleSubmit }) => {
                                 item.question_field_type.question_answer_options.map((qao, i) => {
                                     return <View key={i+1} style={{ flexDirection: 'row', alignItems: 'center' }}>
                                         <RadioButton.Android
-                                            value={String(qao.option_id)}
+                                            value={String(qao.ordering)} // using ordering here as it makes logical sense for 'score' at the moment
                                             color="blue"
                                         />
                                         <Text>{qao.option_text}</Text>
@@ -61,6 +74,10 @@ const FFQForm = ({ questions, _handleSubmit }) => {
                                 })
                             }
                         </RadioButton.Group>
+                        {
+                            formik.errors[item.field_code] && 
+                            <Text style={{color: "red"}}>{formik.errors[item.field_code]}</Text>
+                        }
                     </>
                 )}
                 keyExtractor={item => item.question_id}

@@ -6,14 +6,12 @@ import { AuthContext } from '../context/AuthContext.js';
 
 import AuthStack from './AuthStack.js';
 import AppStack from './AppStack.js';
-import PreappStack from './PreappStack.js'
 import linking from '../../linking.js';
 
 export const AppNav = () => {
     const {
         isLoading, 
-        userToken,
-        userInfo
+        userToken
     } = useContext(AuthContext)
 
     return (
@@ -26,9 +24,7 @@ export const AppNav = () => {
                 <NavigationContainer linking={linking}>
                 { 
                     userToken !== null ? 
-                    userToken && userInfo?.ffq_complete > 0 ?
                     <AppStack /> :
-                    <PreappStack /> :
                     <AuthStack />
                 }
                 </NavigationContainer>
