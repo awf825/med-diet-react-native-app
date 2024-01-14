@@ -49,7 +49,13 @@ const AppStack = () => {
             component={_Drawer}
             options={{ headerShown: false }}
           />
-          <Stack.Screen name="FFQ" component={FFQFormScreen} />
+          <Stack.Screen 
+            name="FFQ" 
+            component={FFQFormScreen} 
+            options={{
+              headerTitle: "Before we get started..."
+            }}
+          />
         </Stack.Navigator>
     );
 }
