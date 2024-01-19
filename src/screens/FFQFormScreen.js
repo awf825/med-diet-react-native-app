@@ -26,12 +26,16 @@ const FFQFormScreen = ({ navigation }) => {
     const _handleSubmit = (values) => {
         AuthAxios(userToken).post(
             "/api/submissions/submit",
-            questions.map((q) => {
-                return {
-                    ...q,
-                    answer_score: Number(values[q.field_code])
-                }
-            })
+            {
+                dob: values.dob,
+                gender: values.gender,
+                answers: questions.map((q) => {
+                    return {
+                        ...q,
+                        answer_score: Number(values[q.field_code])
+                    }
+                })
+            }
         )
         .then(async resp => {
             console.log('resp.data: ', resp.data)

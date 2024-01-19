@@ -1,14 +1,14 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import {
     SafeAreaView,
     FlatList,
-    Button
+    Button,
+    Text
 } from 'react-native';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import CustomButton from '../CustomButton/CustomButton';
-import { AuthContext } from '../../context/AuthContext';
 import { RadioButtonGroup } from './RadioButtonGroup/RadioButtonGroup';
+import { FormsDatePicker } from './FormsDatePicker/FormsDatePicker';
 
 const getDynamicFormValues = (questions) => {
     return questions.reduce(
@@ -24,9 +24,7 @@ const getDynamicFormValues = (questions) => {
     );
 }
 
-const FFQForm = ({ questions, _handleSubmit }) => {
-    const { logout } = useContext(AuthContext)
-    
+const FFQForm = ({ questions, _handleSubmit }) => {    
     const formik = useFormik({
         initialValues: getDynamicFormValues(questions),
         validationSchema: yup.object().shape(
@@ -46,35 +44,58 @@ const FFQForm = ({ questions, _handleSubmit }) => {
         onSubmit: values => _handleSubmit(values)
     });
 
+    const _renderItem = ({ item, index }) => {
+        switch (item.question_field_type.field_name) {
+            case "FFQ-FREQ-A":
+            case "FFQ-FREQ-B":
+            case "FFQ-FREQ-C":
+                return <RadioButtonGroup
+                    formik={formik}
+                    label={item.question_text}
+                    options={item.question_field_type.question_answer_options}
+                    fieldCode={item.field_code}
+                />
+            case "GENDER":
+                return <RadioButtonGroup
+                    formik={formik}
+                    label={item.question_text}
+                    options={item.question_field_type.question_answer_options}
+                    fieldCode={item.field_code}
+                    isStringValue={true}
+                />
+            case "DOB":
+                return <FormsDatePicker
+                    formik={formik}
+                    label={item.question_text}
+                    fieldCode={item.field_code}
+                />
+            default:
+                return <Text>DEFAULT</Text>
+        }
+    }
+
     return (
-        <SafeAreaView 
+        <SafeAreaView
             style={{ 
                 justifyContent:'center',
-                alignContent:'center', 
-            }} 
+                alignContent:'center',
+            }}
         >
             <FlatList
                 data={questions}
-                renderItem={({ item, index }) => (
-                    <RadioButtonGroup
-                        formik={formik}
-                        label={item.question_text}
-                        options={item.question_field_type.question_answer_options}
-                        fieldCode={item.field_code}
-                    />
-                )}
+                renderItem={_renderItem}
                 keyExtractor={item => item.question_id}
             />
             <Button
-                disabled
+                // disabled={!formik.isValid}
+                // disabled={
+                //     // Object.values(formik.touched) < 1 && 
+                //     // Object.keys(formik.errors).length > 0
+                // }
                 testID={"SUBMIT"}
                 onPress={formik.handleSubmit}
                 title="DONE"
                 name="submit"
-            />
-            <CustomButton 
-                label={"Logout"} 
-                onPress={logout} 
             />
         </SafeAreaView>
     )
