@@ -32,8 +32,12 @@ export const FormsDatePicker = ({
             </View>
             <View
                 style={{
+                    padding: 13,
+                    margin: 'auto',
+                    flex: 1,
                     flexDirection: 'row',
-                    borderBottomColor: '#ccc',
+                    flexWrap: 'wrap',
+                    alignItems: 'flex-start'
                 }}
             >
                 <Ionicons
@@ -47,24 +51,28 @@ export const FormsDatePicker = ({
                         {dobLabel}
                     </Text>
                 </TouchableOpacity>
+                <DatePicker
+                    modal
+                    open={open}
+                    date={date}
+                    mode={'date'}
+                    maximumDate={new Date('2005-01-01')}
+                    minimumDate={new Date('1960-01-01')}
+                    onConfirm={date => {
+                        setOpen(false);
+                        setDate(date);
+                        setDobLabel(date.toDateString());
+                        formik.setFieldValue(fieldCode, date.toDateString())
+                    }}
+                    onCancel={() => {
+                        setOpen(false);
+                    }}
+                />
             </View>
-            <DatePicker
-                modal
-                open={open}
-                date={date}
-                mode={'date'}
-                maximumDate={new Date('2005-01-01')}
-                minimumDate={new Date('1960-01-01')}
-                onConfirm={date => {
-                    setOpen(false);
-                    setDate(date);
-                    setDobLabel(date.toDateString());
-                    formik.setFieldValue(fieldCode, date.toDateString())
-                }}
-                onCancel={() => {
-                    setOpen(false);
-                }}
-            />
+            {
+                formik.errors[fieldCode] && 
+                <Text style={{color: "red"}}>{formik.errors[fieldCode]}</Text>
+            }
         </>
 
     )

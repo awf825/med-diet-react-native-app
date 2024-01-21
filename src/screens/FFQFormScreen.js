@@ -5,13 +5,13 @@ import { AuthContext } from '../context/AuthContext';
 import AuthAxios from '../services/AuthAxios';
 
 const FFQFormScreen = ({ navigation }) => {
-    const { userToken, logout } = useContext(AuthContext)
+    const { userToken } = useContext(AuthContext)
     const [questions, setQuestions] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         setIsLoading(true)
-        AuthAxios(userToken).get("/api/questions/")
+        AuthAxios(userToken).get("/api/questions/ffq")
         .then(resp => {
             setQuestions(resp.data)
         })
@@ -29,6 +29,7 @@ const FFQFormScreen = ({ navigation }) => {
             {
                 dob: values.dob,
                 gender: values.gender,
+                origin: values.origin,
                 answers: questions.map((q) => {
                     return {
                         ...q,

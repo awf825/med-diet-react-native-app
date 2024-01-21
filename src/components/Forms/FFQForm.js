@@ -9,6 +9,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { RadioButtonGroup } from './RadioButtonGroup/RadioButtonGroup';
 import { FormsDatePicker } from './FormsDatePicker/FormsDatePicker';
+import { FormsSelector } from './FormsSelector/FormsSelector';
 
 const getDynamicFormValues = (questions) => {
     return questions.reduce(
@@ -69,8 +70,15 @@ const FFQForm = ({ questions, _handleSubmit }) => {
                     label={item.question_text}
                     fieldCode={item.field_code}
                 />
+            case "SELECT-ORIGIN": // Perhaps regex for "select-xxx"
+                return <FormsSelector
+                    formik={formik}
+                    label={item.question_text}
+                    options={item.question_field_type.question_answer_options}
+                    fieldCode={item.field_code}
+                />
             default:
-                return <Text>DEFAULT</Text>
+                return <Text>DEFAULT</Text> // please change
         }
     }
 
