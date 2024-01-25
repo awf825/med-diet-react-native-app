@@ -14,7 +14,7 @@ const SurveyScreen = ({ navigation }) => {
 
     useEffect(() => {
         setIsLoading(true)
-        AuthAxios(userToken).get("/api/questions/")
+        AuthAxios(userToken).get("/api/questions/weekly")
         .then(resp => {
             setQuestions(resp.data)
             setIsLoading(false);
@@ -29,17 +29,19 @@ const SurveyScreen = ({ navigation }) => {
     const _handleSubmit = (values) => {
         AuthAxios(userToken).post(
             "/api/submissions/submit",
-            questions.map((q) => {
-                return {
-                    ...q,
-                    answer_score: values[q.field_code]
-                }
-            })
+            {
+                form_id: 2,
+                answers: questions.map((q) => {
+                    return {
+                        ...q,
+                        answer_score: Number(values[q.field_code])
+                    }
+                })
+            }
         )
-        .then(resp => {
+        .then(async resp => {
             if (resp.data.success) {
                 navigation.navigate('Dashboard')
-                // setIsLoading(false);
             }
         })
         .catch(err => console.log(err))

@@ -79,9 +79,11 @@ export const AuthProvider = ({ children }) => {
 
     const isLoggedIn = async () => {
         try {
+            console.log('fire isLoggedIn')
             setIsLoading(true);
             let userToken = await AsyncStorage.getItem('userToken');
             setUserToken(userToken)
+            // setUserToken(null) <- goofy local reset token
             setIsLoading(false);
         } catch (e) {
             console.log(`isLogged in error ${e}`)

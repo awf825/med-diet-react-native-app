@@ -14,6 +14,8 @@ export const AppNav = () => {
         userToken
     } = useContext(AuthContext)
 
+    console.log('userToken: ', userToken)
+
     return (
         <>
             {

@@ -2,37 +2,22 @@ import React from 'react';
 import {
     SafeAreaView,
     FlatList,
-    StyleSheet,
-    StatusBar,
-    Text,
     Button,
-    View
+    Text
 } from 'react-native';
-import { Formik } from 'formik';
-import { Picker } from '@react-native-picker/picker';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
+import { RadioButtonGroup } from './RadioButtonGroup/RadioButtonGroup';
+import { FormsDatePicker } from './FormsDatePicker/FormsDatePicker';
+import { FormsSelector } from './FormsSelector/FormsSelector';
 
-let numberOptions = [];
-for (let i = 0; i <= 30; i++) {
-    numberOptions.push({
-        label: String(i),
-        value: i
-    })
-}
-
-let radioOptions = [
-    { label: "Yes", value: 1 },
-    { label: "No", value: 0 }
-]
-
-const getDynamicFormValues = (data) => {
-    return data.reduce(
+const getDynamicFormValues = (questions) => {
+    return questions.reduce(
         (prev, curr) => {
             return Object.assign(
                 prev,
                 {
-                    [curr.field_code]: curr.field_type === "INT" ? 0 :
-                        curr.field_type === "TEXT" ? 1 :
-                            null
+                    [curr.field_code]: ""
                 }
             )
         },
@@ -40,63 +25,90 @@ const getDynamicFormValues = (data) => {
     );
 }
 
-
 const SurveyForm = ({ questions, _handleSubmit }) => {
+    const formik = useFormik({
+        initialValues: getDynamicFormValues(questions),
+        validationSchema: yup.object().shape(
+            questions.reduce(
+                (prev, curr) => {
+                    return Object.assign(
+                        prev,
+                        {
+                            [curr.field_code]: yup.string().min(1).required("All fields are required.")
+                        }
+                    )
+                },
+                {}
+            )
+        ),
+        validateOnChange: false,
+        onSubmit: values => _handleSubmit(values)
+    });
+
+    const _renderItem = ({ item, index }) => {
+        switch (item.question_field_type.field_name) {
+            case "FFQ-FREQ-A":
+            case "FFQ-FREQ-B":
+            case "FFQ-FREQ-C":
+            case "WKLY-QTY":
+            case "WKLY-FREQ":
+                return <RadioButtonGroup
+                    formik={formik}
+                    label={item.question_text}
+                    options={item.question_field_type.question_answer_options}
+                    fieldCode={item.field_code}
+                />
+            case "GENDER":
+                return <RadioButtonGroup
+                    formik={formik}
+                    label={item.question_text}
+                    options={item.question_field_type.question_answer_options}
+                    fieldCode={item.field_code}
+                    isStringValue={true}
+                />
+            case "DOB":
+                return <FormsDatePicker
+                    formik={formik}
+                    label={item.question_text}
+                    fieldCode={item.field_code}
+                />
+            case "SELECT-ORIGIN": // Perhaps regex for "select-xxx"
+                return <FormsSelector
+                    formik={formik}
+                    label={item.question_text}
+                    options={item.question_field_type.question_answer_options}
+                    fieldCode={item.field_code}
+                />
+            default:
+                return <Text>DEFAULT</Text> // please change
+        }
+    }
+
     return (
-        <Formik
-            testID="SURVEY-FORM"
-            initialValues={getDynamicFormValues(questions)}
-            onSubmit={values => _handleSubmit(values)}
+        <SafeAreaView
+            style={{ 
+                justifyContent:'center',
+                alignContent:'center',
+            }}
         >
-            {
-                ({ setFieldValue, handleSubmit, values }) => (
-                    <SafeAreaView style={styles.container}>
-                        <FlatList
-                            data={questions}
-                            renderItem={({ item, index }) => (
-                                <View testID={`form-item-${index}`} style={styles.item}>
-                                    <Text>{item.question_text}</Text>
-                                    <Picker
-                                        selectedValue={values[item.field_code]}
-                                        onValueChange={(itemValue, itemIndex) => {
-                                            setFieldValue(item.field_code, itemValue)
-                                        }}>
-                                        {
-                                            (item.field_type === "INT" ? numberOptions : radioOptions).map(option => {
-                                                return <Picker.Item key={option.value} label={option.label} value={option.value} />
-                                            })
-                                        }
-                                    </Picker>
-                                </View>
-                            )}
-                            keyExtractor={item => item.question_id}
-                        />
-                        <Button
-                            testID={"SUBMIT"}
-                            onPress={handleSubmit}
-                            title="DONE"
-                            name="submit"
-                        />
-                    </SafeAreaView>
-                )
-            }
-        </Formik>
+            <FlatList
+                data={questions}
+                renderItem={_renderItem}
+                keyExtractor={item => item.question_id}
+            />
+            <Button
+                // disabled={!formik.isValid}
+                // disabled={
+                //     // Object.values(formik.touched) < 1 && 
+                //     // Object.keys(formik.errors).length > 0
+                // }
+                testID={"SUBMIT"}
+                onPress={formik.handleSubmit}
+                title="DONE"
+                name="submit"
+            />
+        </SafeAreaView>
     )
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        marginTop: StatusBar.currentHeight || 0,
-    },
-    item: {
-        padding: 20,
-        marginVertical: 8,
-        marginHorizontal: 16,
-    },
-    title: {
-        fontSize: 32,
-    },
-});
 
 export default SurveyForm;

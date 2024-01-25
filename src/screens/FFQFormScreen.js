@@ -27,9 +27,7 @@ const FFQFormScreen = ({ navigation }) => {
         AuthAxios(userToken).post(
             "/api/submissions/submit",
             {
-                dob: values.dob,
-                gender: values.gender,
-                origin: values.origin,
+                form_id: 1,
                 answers: questions.map((q) => {
                     return {
                         ...q,
@@ -39,15 +37,26 @@ const FFQFormScreen = ({ navigation }) => {
             }
         )
         .then(async resp => {
-            console.log('resp.data: ', resp.data)
             if (resp.data.success) {
-                const userInfo = await AsyncStorage.getItem('userInfo');
-                const userParsed = JSON.parse(userInfo);
-                const newUserInfo = {
-                    ...userParsed,
-                    ffq_complete: 1
+                try {
+                    await AuthAxios(userToken).post(
+                        "/api/users/updateUserInfo",
+                        {
+                            dob: values.dob,
+                            gender: values.gender,
+                            origin: values.origin,
+                        }
+                    )
+                    const userInfo = await AsyncStorage.getItem('userInfo');
+                    const userParsed = JSON.parse(userInfo);
+                    const newUserInfo = {
+                        ...userParsed,
+                        ffq_complete: 1
+                    }
+                    await AsyncStorage.setItem('userInfo', JSON.stringify(newUserInfo));
+                } catch (err) {
+                    console.log('Something went wrong')
                 }
-                await AsyncStorage.setItem('userInfo', JSON.stringify(newUserInfo));
                 navigation.navigate('Drawer')
             }
         })
