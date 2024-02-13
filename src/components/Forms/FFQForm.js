@@ -10,6 +10,7 @@ import * as yup from 'yup';
 import { RadioButtonGroup } from './RadioButtonGroup/RadioButtonGroup';
 import { FormsDatePicker } from './FormsDatePicker/FormsDatePicker';
 import { FormsSelector } from './FormsSelector/FormsSelector';
+import _questions from './questions.json'
 
 const getDynamicFormValues = (questions) => {
     return questions.reduce(
@@ -26,8 +27,10 @@ const getDynamicFormValues = (questions) => {
 }
 
 const FFQForm = ({ questions, _handleSubmit }) => {    
+    console.log('questions: ', _questions)
+
     const formik = useFormik({
-        initialValues: getDynamicFormValues(questions),
+        initialValues: getDynamicFormValues(_questions),
         validationSchema: yup.object().shape(
             questions.reduce(
                 (prev, curr) => {
@@ -90,7 +93,7 @@ const FFQForm = ({ questions, _handleSubmit }) => {
             }}
         >
             <FlatList
-                data={questions}
+                data={_questions}
                 renderItem={_renderItem}
                 keyExtractor={item => item.question_id}
             />

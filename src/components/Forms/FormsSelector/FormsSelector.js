@@ -43,7 +43,7 @@ export const FormsSelector = ({
                     data={options.map((opt, i) => {
                         return {
                             key: i+1,
-                            label: opt.option_text
+                            label: opt
                         }
                     })}
                     initValue="Select a country"
