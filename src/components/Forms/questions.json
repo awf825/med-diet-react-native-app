@@ -1,148 +1,459 @@
 [
     {
         "question_id": 1,
-        "question_text": "How often did you eat baked ham or ham steak?",
-        "field_code": "ham",
+        "question_text": "How often did you drink a glass (8 oz) of skim or low fat milk?",
+        "field_code": "skim-milk",
+        "field_category": "Dairy",
         "form_id": 1,
-        "question_field_type": {
-            "field_name": "FFQ-FREQ-A",
-            "question_answer_options": [
-                {
-                    "option_text": "NEVER",
-                    "ordering": 1
-                },
-                {
-                    "option_text": "1-6 times per year",
-                    "ordering": 2
-                },
-                {
-                    "option_text": "7-11 times per year",
-                    "ordering": 3
-                },
-                {
-                    "option_text": "Once per month",
-                    "ordering": 4
-                },
-                {
-                    "option_text": "2-3 times per month",
-                    "ordering": 5
-                },
-                {
-                    "option_text": "1 time per week",
-                    "ordering": 6
-                },
-                {
-                    "option_text": "Twice per week",
-                    "ordering": 7
-                },
-                {
-                    "option_text": "3-4 times per week",
-                    "ordering": 8
-                },
-                {
-                    "option_text": "5-6 times per week",
-                    "ordering": 9
-                },
-                {
-                    "option_text": "1 time per day",
-                    "ordering": 10
-                },
-                {
-                    "option_text": "2 or more times per day",
-                    "ordering": 11
-                }
-            ]
-        }
+        "field_type": "FFQ-FREQ"
     },
     {
         "question_id": 2,
-        "question_text": "How often were the soups you ate cream soups (including chowders)?",
-        "field_code": "creamsoup",
+        "question_text": "How often did you drink a glass (8 oz) of whole milk?",
+        "field_code": "whole-milk",
+        "field_category": "Dairy",
         "form_id": 1,
-        "question_field_type": {
-            "field_name": "FFQ-FREQ-B",
-            "question_answer_options": [
-                {
-                    "option_text": "Almost never or never",
-                    "ordering": 1
-                },
-                {
-                    "option_text": "About 1/4 of the time",
-                    "ordering": 2
-                },
-                {
-                    "option_text": "About 1/2 of the time",
-                    "ordering": 3
-                },
-                {
-                    "option_text": "About 3/4 of the time",
-                    "ordering": 4
-                },
-                {
-                    "option_text": "Almost always or always",
-                    "ordering": 5
-                }
-            ]
-        }
+        "field_type": "FFQ-FREQ"
     },
     {
         "question_id": 3,
-        "question_text": "How often did you drink beer IN THE SUMMER?",
-        "field_code": "beer",
+        "question_text": "How often did you eat a container (6 oz) of yoghurt or fermented milk?",
+        "field_code": "yogurt",
+        "field_category": "Dairy",
         "form_id": 1,
-        "question_field_type": {
-            "field_name": "FFQ-FREQ-C",
-            "question_answer_options": [
-                {
-                    "option_text": "NEVER",
-                    "ordering": 1
-                },
-                {
-                    "option_text": "1 time per month",
-                    "ordering": 2
-                },
-                {
-                    "option_text": "2-3 times per month",
-                    "ordering": 3
-                },
-                {
-                    "option_text": "1-2 times per week",
-                    "ordering": 4
-                },
-                {
-                    "option_text": "3-4 times perr week",
-                    "ordering": 5
-                },
-                {
-                    "option_text": "5-6 times per week",
-                    "ordering": 6
-                },
-                {
-                    "option_text": "1 time per day",
-                    "ordering": 7
-                },
-                {
-                    "option_text": "2-3 times per day",
-                    "ordering": 8
-                },
-                {
-                    "option_text": "4-5 times per day",
-                    "ordering": 9
-                },
-                {
-                    "option_text": "6 or more times per day",
-                    "ordering": 10
-                }
-            ]
-        }
+        "field_type": "FFQ-FREQ"
     },
     {
         "question_id": 4,
+        "question_text": "How often did you eat 1 cup of ice cream?",
+        "field_code": "ice-cream",
+        "field_category": "Dairy",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": 5,
+        "question_text": "How often did you eat half a cup of fresh cheese? (NEED EXAMPLES)",
+        "field_code": "fresh-cheese",
+        "field_category": "Dairy",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": 6,
+        "question_text": "How often did you eat 2 slices of hard cheese? (NEED EXAMPLES)",
+        "field_code": "hard-cheese",
+        "field_category": "Dairy",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": 7,
+        "question_text": "How often did you eat a whole banana?",
+        "field_code": "banana",
+        "field_category": "Fruits",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": 8,
+        "question_text": "How often did you eat an orange, apple, pear or peach?",
+        "field_code": "hand-fruit",
+        "field_category": "Fruits",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": 9,
+        "question_text": "How often did you eat half a cup of strawberries, blueberries, or grapes?",
+        "field_code": "berry",
+        "field_category": "Fruits",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": 10,
+        "question_text": "How often did you eat half a cup of pineapple, cantaloupe, avocado, tangerine, apricot, or plum?",
+        "field_code": "other-fruit",
+        "field_category": "Fruits",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": 11,
+        "question_text": "How often did you drink a glass of (fresh) fruit juice?",
+        "field_code": "juice",
+        "field_category": "Fruits",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": 12,
+        "question_text": "How often did you eat (half of a tomato)?",
+        "field_code": "tomato",
+        "field_category": "Vegetables",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": 13,
+        "question_text": "How often did you eat 1/2 cup of cooked string beans, broccoli, carrots, cabbage, cauliflower, or coleslaw?",
+        "field_code": "beans",
+        "field_category": "Vegetables",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": 14,
+        "question_text": "How often did you eat 1/2 cup of (uncooked) spinach, lettuce, or leafy greens?",
+        "field_code": "greens",
+        "field_category": "Vegetables",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": 15,
+        "question_text": "How often did you eat an ear of corn?",
+        "field_code": "corn",
+        "field_category": "Vegetables",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": 16,
+        "question_text": "How often did you eat 1/2 cup of (cooked) squash, eggplant, or zucchini?",
+        "field_code": "squash",
+        "field_category": "Vegetables",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": 17,
+        "question_text": "How often did you eat 1/2 cup of (cooked) beans, peas, lentils, or chickpeas?",
+        "field_code": "lentil",
+        "field_category": "Vegetables",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": 18,
+        "question_text": "How often did you eat a 4 oz piece of chicken or turkey?",
+        "field_code": "chicken",
+        "field_category": "Meat",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": 19,
+        "question_text": "How often did you eat a (piece of|unit|one) hamburger, hot dog, or sausage?",
+        "field_code": "beef",
+        "field_category": "Meat",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": 20,
+        "question_text": "How often did you eat 2 slices of bacon?",
+        "field_code": "bacon",
+        "field_category": "Meat",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": 21,
+        "question_text": "How often did you eat a 4 oz piece of pork, lamb, or beef steak?",
+        "field_code": "red",
+        "field_category": "Meat",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": 22,
+        "question_text": "How often did you eat two slices of cold cuts?",
+        "field_code": "cold-cut",
+        "field_category": "Meat",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": 23,
+        "question_text": "How often did you eat a (4 oz) can of tuna fish?",
+        "field_code": "tuna",
+        "field_category": "Meat",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": 24,
+        "question_text": "How often did you eat a 4 oz fillet of cod, tilapia, pollock, halibut, catfish or flounder?",
+        "field_code": "fish",
+        "field_category": "Meat",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": 25,
+        "question_text": "How often did you eat a 4 oz fillet of tuna steak, mackerel, salmon, sardine, or swordfish?",
+        "field_code": "bluefish",
+        "field_category": "Meat",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": 26,
+        "question_text": "How often did you eat a single (hard boiled) egg?",
+        "field_code": "egg",
+        "field_category": "Meat",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": 27,
+        "question_text": "How often did you eat 1 cup of cold breakfast cereal?",
+        "field_code": "cereal",
+        "field_category": "Starch",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": 28,
+        "question_text": "How often did you eat a single slice of white bread?",
+        "field_code": "white",
+        "field_category": "Starch",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": 29,
+        "question_text": "How often did you eat a single slice of dark or whole grain bread?",
+        "field_code": "wheat",
+        "field_category": "Starch",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": 30,
+        "question_text": "How often did you eat a serving of 6 crackers (saltines, ritz, etc)?",
+        "field_code": "cracker",
+        "field_category": "Starch",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": 31,
+        "question_text": "How often did you eat 2 slices of pizza?",
+        "field_code": "pizza",
+        "field_category": "Starch",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": 32,
+        "question_text": "How often did you eat a tortilla (burrito, quesadila)?",
+        "field_code": "tortilla",
+        "field_category": "Starch",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": 33,
+        "question_text": "How often did you eat one small bag of potato chips or corn chips?",
+        "field_code": "chips",
+        "field_category": "Starch",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": 34,
+        "question_text": "How often did you eat (a serving) of french fries?",
+        "field_code": "fries",
+        "field_category": "Starch",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": 35,
+        "question_text": "How often did you eat 1/2 cup of baked, boiled, or (mashed) potatoes?",
+        "field_code": "potato",
+        "field_category": "Starch",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": 36,
+        "question_text": "How often did you eat a cup of white rice?",
+        "field_code": "rice",
+        "field_category": "Starch",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": 37,
+        "question_text": "How often did you eat 1 cup of pasta?",
+        "field_code": "pasta",
+        "field_category": "Starch",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": 38,
+        "question_text": "How often did you drink 8 oz of water?",
+        "field_code": "water",
+        "field_category": "Beverage",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": 39,
+        "question_text": "How often did you drink (8 oz) or coffee or (black) tea?",
+        "field_code": "coffee",
+        "field_category": "Beverage",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": 40,
+        "question_text": "How often did you drink a can or bottle of a carbonated beverage (EXAMPLES)",
+        "field_code": "carb",
+        "field_category": "Beverage",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": 41,
+        "question_text": "How often did you drink a can or bottle of a low-calorie beverage (EXAMPLES)",
+        "field_code": "low-cal",
+        "field_category": "Beverage",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": 42,
+        "question_text": "How often did you drink a can or bottle of beer (EXAMPLES)",
+        "field_code": "beer",
+        "field_category": "Beverage",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": 43,
+        "question_text": "How often did you drink a glass of wine?",
+        "field_code": "wine",
+        "field_category": "Beverage",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": 44,
+        "question_text": "How often did you drink 1.5 oz of liquor?",
+        "field_code": "liquor",
+        "field_category": "Beverage",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": 45,
+        "question_text": "How often did you eat a bar of chocolate?",
+        "field_code": "choc",
+        "field_category": "Sweets",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": 46,
+        "question_text": "How often did you eat a doughnut, bagel, muffin, bread roll, pancake, waffle, cookie, a slice of cake or pie?",
+        "field_code": "baked",
+        "field_category": "Sweets",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },    
+    {
+        "question_id": 47,
+        "question_text": "How often did you eat 1 tablespoon of peanut butter?",
+        "field_code": "pb",
+        "field_category": "Sweets",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": 48,
+        "question_text": "How often did you eat 1 piece of snack bars like Kind, Kashi, Clif, or Quest?",
+        "field_code": "energy",
+        "field_category": "Sweets",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": 49,
+        "question_text": "How often did you eat 1 small bag of doritos or pretzels?",
+        "field_code": "snack",
+        "field_category": "Sweets",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": 50,
+        "question_text": "How often did you eat (1 serving) of peanuts, walnuts, or other nuts?",
+        "field_code": "nuts",
+        "field_category": "Sweets",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": 51,
+        "question_text": "How often did you eat (1 package of candies)?",
+        "field_code": "candy",
+        "field_category": "Sweets",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": 52,
+        "question_text": "How often did you use 1 tablespoon of olive oil for cooking or dressing?",
+        "field_code": "olive-oil",
+        "field_category": "Culinary",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": 53,
+        "question_text": "How often did you use 1 tablespoon of vegetable oil for cooking or dressing?",
+        "field_code": "veg-oil",
+        "field_category": "Culinary",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": 54,
+        "question_text": "How often did you use 1 tablespoon of mayonnaise, italian or ranch salad dressing?",
+        "field_code": "mayo",
+        "field_category": "Culinary",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": 55,
+        "question_text": "How often did you use 1 tablespoon of butter or margarine for cooking or added to food or bread?",
+        "field_code": "butter",
+        "field_category": "Culinary",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": 56,
+        "question_text": "How often did you add salt to food at the table?",
+        "field_code": "salt",
+        "field_category": "Culinary",
+        "form_id": 1,
+        "field_type": "FFQ-FREQ"
+    },
+    {
+        "question_id": "x",
         "question_text": "Please select your gender.",
         "field_code": "gender",
         "form_id": 1,
+        "field_type": "GENDER",
         "question_field_type": {
-            "field_name": "GENDER",
             "question_answer_options": [
                 {
                     "option_text": "Male",
@@ -168,23 +479,21 @@
         }
     },
     {
-        "question_id": 5,
+        "question_id": "x",
         "question_text": "PLease select your date of birth.",
         "field_code": "dob",
         "form_id": 1,
-        "question_field_type": {
-            "field_name": "DOB"
-        }
+        "field_type": "DOB"
     },
     {
-        "question_id": 6,
+        "question_id": "x",
         "question_text": "Please select your country of origin.",
         "field_type_id": 6,
         "field_code": "origin",
+        "field_type": "SELECT-ORIGIN",
         "form_id": 1,
         "question_field_type": {
             "field_type_id": 6,
-            "field_name": "SELECT-ORIGIN",
             "question_answer_options": [
                 "United States",
                 "Spain",

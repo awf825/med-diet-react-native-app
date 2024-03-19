@@ -11,6 +11,7 @@ import { RadioButtonGroup } from './RadioButtonGroup/RadioButtonGroup';
 import { FormsDatePicker } from './FormsDatePicker/FormsDatePicker';
 import { FormsSelector } from './FormsSelector/FormsSelector';
 import _questions from './questions.json'
+import _options from './options.json'
 
 const getDynamicFormValues = (questions) => {
     return questions.reduce(
@@ -49,14 +50,12 @@ const FFQForm = ({ questions, _handleSubmit }) => {
     });
 
     const _renderItem = ({ item, index }) => {
-        switch (item.question_field_type.field_name) {
-            case "FFQ-FREQ-A":
-            case "FFQ-FREQ-B":
-            case "FFQ-FREQ-C":
+        switch (item.field_type) {
+            case "FFQ-FREQ":
                 return <RadioButtonGroup
                     formik={formik}
                     label={item.question_text}
-                    options={item.question_field_type.question_answer_options}
+                    options={_options}
                     fieldCode={item.field_code}
                 />
             case "GENDER":

@@ -1,0 +1,42 @@
+[
+    {
+        "option_text": "Never, or less than once a month",
+        "ordering": 1
+    },
+    {
+        "option_text": "1-3 times a month",
+        "ordering": 2
+    },
+    {
+        "option_text": "Once a week",
+        "ordering": 3
+    },
+    {
+        "option_text": "Once per month",
+        "ordering": 4
+    },
+    {
+        "option_text": "2-4 times a week",
+        "ordering": 5
+    },
+    {
+        "option_text": "5-6 times a week",
+        "ordering": 6
+    },
+    {
+        "option_text": "Once a day",
+        "ordering": 7
+    },
+    {
+        "option_text": "2-3 times a day",
+        "ordering": 8
+    },
+    {
+        "option_text": "4-5 times a day",
+        "ordering": 9
+    },
+    {
+        "option_text": "6 or more times a day",
+        "ordering": 10
+    }
+]
