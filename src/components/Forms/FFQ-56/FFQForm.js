@@ -7,9 +7,9 @@ import {
 } from 'react-native';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { RadioButtonGroup } from './RadioButtonGroup/RadioButtonGroup';
-import { FormsDatePicker } from './FormsDatePicker/FormsDatePicker';
-import { FormsSelector } from './FormsSelector/FormsSelector';
+import { RadioButtonGroup } from '../RadioButtonGroup/RadioButtonGroup';
+import { FormsDatePicker } from '../FormsDatePicker/FormsDatePicker';
+import { FormsSelector } from '../FormsSelector/FormsSelector';
 import _questions from './questions.json'
 import _options from './options.json'
 
@@ -27,13 +27,11 @@ const getDynamicFormValues = (questions) => {
     );
 }
 
-const FFQForm = ({ questions, _handleSubmit }) => {    
-    console.log('questions: ', _questions)
-
+const FFQForm = ({ _handleSubmit }) => {    
     const formik = useFormik({
         initialValues: getDynamicFormValues(_questions),
         validationSchema: yup.object().shape(
-            questions.reduce(
+            _questions.reduce(
                 (prev, curr) => {
                     return Object.assign(
                         prev,
@@ -46,7 +44,10 @@ const FFQForm = ({ questions, _handleSubmit }) => {
             )
         ),
         validateOnChange: false,
-        onSubmit: values => _handleSubmit(values)
+        onSubmit: values => {
+            console.log('values: ', values)
+            _handleSubmit(values, _questions)
+        }
     });
 
     const _renderItem = ({ item, index }) => {
@@ -67,6 +68,7 @@ const FFQForm = ({ questions, _handleSubmit }) => {
                     isStringValue={true}
                 />
             case "DOB":
+                console.log('HIT DOB CASE')
                 return <FormsDatePicker
                     formik={formik}
                     label={item.question_text}

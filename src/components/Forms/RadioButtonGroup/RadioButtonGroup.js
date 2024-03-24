@@ -66,7 +66,7 @@ export const RadioButtonGroup = ({
                         }}
                     >
                         {
-                            options.slice(6).map((qao, i) => {
+                            options.slice(5).map((qao, i) => {
                                 return <View key={i+1} style={{ flexDirection: 'row', alignItems: 'center' }}>
                                     <RadioButton.Android
                                         value={String(qao.ordering)} // using ordering here as it makes logical sense for 'score' at the moment

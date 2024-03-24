@@ -1,29 +1,14 @@
 import React, { useEffect, useState, useContext } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import FFQForm from '../components/Forms/FFQForm';
+import FFQForm from '../components/Forms/FFQ-56/FFQForm';
 import { AuthContext } from '../context/AuthContext';
 import AuthAxios from '../services/AuthAxios';
 
 const FFQFormScreen = ({ navigation }) => {
     const { userToken } = useContext(AuthContext)
-    const [questions, setQuestions] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
-    useEffect(() => {
-        setIsLoading(true)
-        AuthAxios(userToken).get("/api/questions/ffq")
-        .then(resp => {
-            setQuestions(resp.data)
-        })
-        .catch(err => console.log(err))
-        setIsLoading(false);
-
-        return () => {
-            setIsLoading(false);
-        }
-    }, [])
-
-    const _handleSubmit = (values) => {
+    const _handleSubmit = (values, questions) => {
         AuthAxios(userToken).post(
             "/api/submissions/submit",
             {
@@ -65,13 +50,7 @@ const FFQFormScreen = ({ navigation }) => {
 
     return (
         <>
-            {
-                questions.length
-                ?
-                <FFQForm questions={questions} _handleSubmit={_handleSubmit} />
-                :
-                null
-            }
+            <FFQForm _handleSubmit={_handleSubmit} />
         </>
     );
 };
