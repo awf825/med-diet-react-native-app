@@ -3,30 +3,32 @@ import {
   View,
   ActivityIndicator
 } from 'react-native';
-import SurveyForm from '../components/Forms/SurveyForm';
+import SurveyForm from '../components/Forms/D-25/SurveyForm';
 import { AuthContext } from '../context/AuthContext';
 import AuthAxios from '../services/AuthAxios';
 
 const SurveyScreen = ({ navigation }) => {
     const { userToken } = useContext(AuthContext)
-    const [questions, setQuestions] = useState([]);
+    // const [questions, setQuestions] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
-    useEffect(() => {
-        setIsLoading(true)
-        AuthAxios(userToken).get("/api/questions/weekly")
-        .then(resp => {
-            setQuestions(resp.data)
-            setIsLoading(false);
-        })
-        .catch(err => console.log(err))
+    // useEffect(() => {
+    //     setIsLoading(true)
+    //     AuthAxios(userToken).get("/api/questions/weekly")
+    //     .then(resp => {
+    //         setQuestions(resp.data)
+    //         setIsLoading(false);
+    //     })
+    //     .catch(err => console.log(err))
 
-        return () => {
-            setIsLoading(false);
-        }
-    }, [])
+    //     return () => {
+    //         setIsLoading(false);
+    //     }
+    // }, [])
 
-    const _handleSubmit = (values) => {
+    const _handleSubmit = (values, questions) => {
+        console.log('values: ', values)
+        console.log('questions: ', questions)
         AuthAxios(userToken).post(
             "/api/submissions/submit",
             {
@@ -54,7 +56,7 @@ const SurveyScreen = ({ navigation }) => {
             <ActivityIndicator size={'large'}/>
         </View>
         :
-        <SurveyForm questions={questions} _handleSubmit={_handleSubmit}/>
+        <SurveyForm _handleSubmit={_handleSubmit}/>
     );
 };
 

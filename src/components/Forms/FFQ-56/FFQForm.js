@@ -7,9 +7,9 @@ import {
 } from 'react-native';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { RadioButtonGroup } from '../RadioButtonGroup/RadioButtonGroup';
-import { FormsDatePicker } from '../FormsDatePicker/FormsDatePicker';
-import { FormsSelector } from '../FormsSelector/FormsSelector';
+import { RadioButtonGroup } from '../controls/RadioButtonGroup/RadioButtonGroup';
+import { FormsDatePicker } from '../controls/FormsDatePicker/FormsDatePicker';
+import { FormsSelector } from '../controls/FormsSelector/FormsSelector';
 import _questions from './questions.json'
 import _options from './options.json'
 

@@ -1,0 +1,10 @@
+[
+    {
+        "option_text": "Yes",
+        "ordering": 1
+    },
+    {
+        "option_text": "No",
+        "ordering": 0
+    }
+]

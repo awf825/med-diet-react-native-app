@@ -7,9 +7,11 @@ import {
 } from 'react-native';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { RadioButtonGroup } from './RadioButtonGroup/RadioButtonGroup';
-import { FormsDatePicker } from './FormsDatePicker/FormsDatePicker';
-import { FormsSelector } from './FormsSelector/FormsSelector';
+import { RadioButtonGroup } from '../controls/RadioButtonGroup/RadioButtonGroup';
+import { FormsDatePicker } from '../controls/FormsDatePicker/FormsDatePicker';
+import { FormsSelector } from '../controls/FormsSelector/FormsSelector';
+import _questions from './questions.json'
+import _options from './options.json'
 
 const getDynamicFormValues = (questions) => {
     return questions.reduce(
@@ -25,11 +27,11 @@ const getDynamicFormValues = (questions) => {
     );
 }
 
-const SurveyForm = ({ questions, _handleSubmit }) => {
+const SurveyForm = ({ _handleSubmit }) => {
     const formik = useFormik({
-        initialValues: getDynamicFormValues(questions),
+        initialValues: getDynamicFormValues(_questions),
         validationSchema: yup.object().shape(
-            questions.reduce(
+            _questions.reduce(
                 (prev, curr) => {
                     return Object.assign(
                         prev,
@@ -42,20 +44,21 @@ const SurveyForm = ({ questions, _handleSubmit }) => {
             )
         ),
         validateOnChange: false,
-        onSubmit: values => _handleSubmit(values)
+        onSubmit: values => _handleSubmit(values, _questions)
     });
 
     const _renderItem = ({ item, index }) => {
-        switch (item.question_field_type.field_name) {
+        switch (item.field_type) {
             case "FFQ-FREQ-A":
             case "FFQ-FREQ-B":
             case "FFQ-FREQ-C":
+            case "FFQ-FREQ":
             case "WKLY-QTY":
             case "WKLY-FREQ":
                 return <RadioButtonGroup
                     formik={formik}
                     label={item.question_text}
-                    options={item.question_field_type.question_answer_options}
+                    options={_options}
                     fieldCode={item.field_code}
                 />
             case "GENDER":
@@ -92,7 +95,7 @@ const SurveyForm = ({ questions, _handleSubmit }) => {
             }}
         >
             <FlatList
-                data={questions}
+                data={_questions}
                 renderItem={_renderItem}
                 keyExtractor={item => item.question_id}
             />

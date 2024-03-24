@@ -17,7 +17,7 @@ import FFQFormScreen from '../screens/FFQFormScreen';
 
 const AppStack = () => {
     const { logout, userInfo } = useContext(AuthContext)
-  
+      
     const CustomDrawerContent = (props) => {
       return (
         <DrawerContentScrollView {...props}>
