@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { memo } from 'react';
 import {
     Text,
     View,
 } from 'react-native';
 import { RadioButton } from 'react-native-paper';
 
-export const RadioButtonGroup = ({
+const RadioButtonGroup = ({
     formik,
     label,
     options,
@@ -25,7 +25,10 @@ export const RadioButtonGroup = ({
                 <Text>{label}</Text>
             </View>
             <RadioButton.Group
-                onValueChange={formik.handleChange(fieldCode)}
+                onValueChange={() => {
+                    console.log('formik: ', formik)
+                    formik.handleChange(fieldCode)
+                }}
                 value={formik.values[fieldCode]}
             >
             <View
@@ -93,3 +96,5 @@ export const RadioButtonGroup = ({
         </View>
     )
 };
+
+export default memo(RadioButtonGroup)

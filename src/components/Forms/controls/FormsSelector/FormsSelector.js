@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import {
     View,
     Text,
@@ -7,7 +7,7 @@ import {
 // https://www.npmjs.com/package/react-native-modal-selector great package
 import ModalSelector from 'react-native-modal-selector'
 
-export const FormsSelector = ({
+const FormsSelector = ({
     formik,
     label,
     options,
@@ -43,7 +43,7 @@ export const FormsSelector = ({
                     data={options.map((opt, i) => {
                         return {
                             key: i+1,
-                            label: opt
+                            label: opt.label.option_text
                         }
                     })}
                     initValue="Select a country"
@@ -67,3 +67,5 @@ export const FormsSelector = ({
 
     )
 }
+
+export default memo(FormsSelector)

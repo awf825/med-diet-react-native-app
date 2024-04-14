@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import {
     View,
     TouchableOpacity,
@@ -7,7 +7,7 @@ import {
 import DatePicker from 'react-native-date-picker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-export const FormsDatePicker = ({
+const FormsDatePicker = ({
     formik,
     label,
     fieldCode
@@ -77,3 +77,5 @@ export const FormsDatePicker = ({
 
     )
 }
+
+export default memo(FormsDatePicker)
