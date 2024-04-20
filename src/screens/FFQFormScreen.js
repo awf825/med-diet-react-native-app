@@ -57,7 +57,7 @@ const FFQFormScreen = ({ navigation }) => {
                     }
                     await AsyncStorage.setItem('userInfo', JSON.stringify(newUserInfo));
                 } catch (err) {
-                    console.log('Something went wrong')
+                    console.log('Something went wrong @ updateUserInfo: ', err)
                 }
                 navigation.navigate('Drawer')
             }

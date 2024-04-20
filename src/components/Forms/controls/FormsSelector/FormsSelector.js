@@ -6,13 +6,15 @@ import {
 } from 'react-native';
 // https://www.npmjs.com/package/react-native-modal-selector great package
 import ModalSelector from 'react-native-modal-selector'
+import { useFormikContext } from 'formik';
+
 
 const FormsSelector = ({
-    formik,
     label,
     options,
     fieldCode
 }) => {
+    const { errors, setFieldValue } = useFormikContext();
     const [textInputValue, setTextInputValue] = useState("Click to select")
 
     return (
@@ -49,7 +51,7 @@ const FormsSelector = ({
                     initValue="Select a country"
                     onChange={ (option) => { 
                         setTextInputValue(option.label)
-                        formik.setFieldValue(fieldCode, option.label)
+                        setFieldValue(fieldCode, option.label)
                     }} 
                 >
                     <TextInput
@@ -60,8 +62,8 @@ const FormsSelector = ({
                 </ModalSelector>
             </View>
             {
-                formik.errors[fieldCode] && 
-                <Text style={{color: "red"}}>{formik.errors[fieldCode]}</Text>
+                errors[fieldCode] && 
+                <Text style={{color: "red"}}>{errors[fieldCode]}</Text>
             }
         </>
 

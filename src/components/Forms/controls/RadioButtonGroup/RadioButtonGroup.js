@@ -4,14 +4,15 @@ import {
     View,
 } from 'react-native';
 import { RadioButton } from 'react-native-paper';
+import { useFormikContext } from 'formik';
 
 const RadioButtonGroup = ({
-    formik,
     label,
     options,
     fieldCode,
     isStringValue // is the form value a string (for id'ing) or a number (for scoring)?
 }) => {
+    const { values, errors, setFieldValue } = useFormikContext();
     return (
         <View>
             <View
@@ -25,11 +26,10 @@ const RadioButtonGroup = ({
                 <Text>{label}</Text>
             </View>
             <RadioButton.Group
-                onValueChange={() => {
-                    console.log('formik: ', formik)
-                    formik.handleChange(fieldCode)
+                onValueChange={(value) => {
+                    setFieldValue(fieldCode, value)
                 }}
-                value={formik.values[fieldCode]}
+                value={values[fieldCode]}
             >
             <View
                 style={{ 
@@ -88,8 +88,8 @@ const RadioButtonGroup = ({
                         }
                     </View>
                 {
-                    formik.errors[fieldCode] && 
-                    <Text style={{color: "red"}}>{formik.errors[fieldCode]}</Text>
+                    errors[fieldCode] && 
+                    <Text style={{color: "red"}}>{errors[fieldCode]}</Text>
                 }
             </View>
             </RadioButton.Group>

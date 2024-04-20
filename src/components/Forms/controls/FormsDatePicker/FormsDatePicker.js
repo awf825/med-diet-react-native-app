@@ -6,12 +6,13 @@ import {
 } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useFormikContext } from 'formik';
 
 const FormsDatePicker = ({
-    formik,
     label,
     fieldCode
 }) => {
+    const { errors, setFieldValue } = useFormikContext();
     const [date, setDate] = useState(new Date());
     const [open, setOpen] = useState(false);
     const [dobLabel, setDobLabel] = useState('Push to select.');
@@ -62,7 +63,7 @@ const FormsDatePicker = ({
                         setOpen(false);
                         setDate(date);
                         setDobLabel(date.toDateString());
-                        formik.setFieldValue(fieldCode, date.toDateString())
+                        setFieldValue(fieldCode, date.toDateString())
                     }}
                     onCancel={() => {
                         setOpen(false);
@@ -70,8 +71,8 @@ const FormsDatePicker = ({
                 />
             </View>
             {
-                formik.errors[fieldCode] && 
-                <Text style={{color: "red"}}>{formik.errors[fieldCode]}</Text>
+                errors[fieldCode] && 
+                <Text style={{color: "red"}}>{errors[fieldCode]}</Text>
             }
         </>
 
