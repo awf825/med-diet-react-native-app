@@ -22,8 +22,9 @@ const DashboardScreen = ({ navigation }) => {
   useEffect(() => {
     navigation.addListener('focus', () => {
       setIsLoading(true)
-      AuthAxios(userToken).get("/api/submissions/")
+      AuthAxios(userToken).get("/api/submissions/getAnswersByCategory")
         .then(resp => {
+          console.log(resp.data)
           setSubmissions(resp.data)
           setIsLoading(false);
         })
@@ -46,24 +47,25 @@ const DashboardScreen = ({ navigation }) => {
                 console.error('Advert failed to load: ', error);
               }}
             />
-            <Text>Submission ID: {item.submission_id}</Text>
-            <Text>Score: {item.score} / 151</Text>
+            <Text>Category: {item.category_display_name}</Text>
+            <Text>Score: {item.score} / {7*item.answer_number}</Text>
             <AnimatedCircularProgress
               size={120}
               width={15}
-              fill={Number(item.score) / 151 * 100}
+              fill={(item.score / (7*item.answer_number)) * 100}
               tintColor="#00e0ff"
               onAnimationComplete={() => console.log('onAnimationComplete')}
               backgroundColor="#3d5875"
             />
           </> :
           <>
-            <Text>Submission ID: {item.submission_id}</Text>
-            <Text>Score: {item.score} / 151</Text>
+            <Text>Category: {item.category_display_name}</Text>
+            <Text>Score: {item.score} / {7*item.answer_number}</Text>
             <AnimatedCircularProgress
               size={120}
               width={15}
-              fill={Number(item.score) / 151 * 100}
+              // fill={120 / 151 * 100}
+              fill={(item.score / (7*item.answer_number)) * 100}
               tintColor="#00e0ff"
               onAnimationComplete={() => console.log('onAnimationComplete')}
               backgroundColor="#3d5875"

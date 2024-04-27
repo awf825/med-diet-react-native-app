@@ -14,6 +14,7 @@ const Stack = createNativeStackNavigator();
 import SurveyScreen from '../screens/SurveyScreen';
 import DashboardScreen from '../screens/DashboardScreen';
 import FFQFormScreen from '../screens/FFQFormScreen';
+import StatsScreen from '../screens/StatsScreen';
 
 const AppStack = () => {
     const { logout, userInfo } = useContext(AuthContext)
@@ -37,6 +38,7 @@ const AppStack = () => {
         >
           <Drawer.Screen name="Dashboard" component={DashboardScreen} />
           <Drawer.Screen name="Survey" component={SurveyScreen} />
+          <Drawer.Screen name="My Stats" component={StatsScreen} />
         </Drawer.Navigator>
       );
     }
