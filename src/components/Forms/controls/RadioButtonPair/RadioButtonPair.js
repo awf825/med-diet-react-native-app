@@ -6,7 +6,7 @@ import {
 import { RadioButton } from 'react-native-paper';
 import { useFormikContext } from 'formik';
 
-const RadioButtonGroup = ({
+const RadioButtonPair = ({
     label,
     options,
     fieldCode,
@@ -14,6 +14,7 @@ const RadioButtonGroup = ({
     positiveImpact
 }) => {
     const { values, errors, setFieldValue } = useFormikContext();
+    const value = positiveImpact ? 7 : 0
     return (
         <View>
             <View
@@ -28,6 +29,7 @@ const RadioButtonGroup = ({
             </View>
             <RadioButton.Group
                 onValueChange={(value) => {
+                    console.log('value: ', value)
                     setFieldValue(fieldCode, value)
                 }}
                 value={values[fieldCode]}
@@ -42,16 +44,13 @@ const RadioButtonGroup = ({
                     alignItems: 'flex-start'
                 }} 
             >
-                    <View
-                        style={{ 
-                            width: '50%'
-                        }}
-                    >
+                    <View>
                         {
-                            options.slice(0,5).map((qao, i) => {
+                            options.map((qao, i) => {
                                 return <View key={i+1} style={{ flexDirection: 'row', alignItems: 'center' }}>
                                     <RadioButton.Android
-                                        value={isStringValue ? qao.option_text : String(positiveImpact ? qao.ordering : -qao.ordering)} // using ordering here as it makes logical sense for 'score' at the moment
+                                        // value={String(positiveImpact ? 1 : 0)}
+                                        value={String(qao.ordering)}
                                         color="blue"
                                     />
                                     <Text
@@ -60,30 +59,6 @@ const RadioButtonGroup = ({
                                             padding: 5
                                         }}
                                     >{qao.option_text}</Text>
-                                </View>
-                            })
-                        }
-                    </View>
-                    <View
-                        style={{ 
-                            width: '50%',
-                        }}
-                    >
-                        {
-                            options.slice(5).map((qao, i) => {
-                                return <View key={i+1} style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                    <RadioButton.Android
-                                        value={isStringValue ? qao.option_text : String(positiveImpact ? qao.ordering : -qao.ordering)} // using ordering here as it makes logical sense for 'score' at the moment
-                                        color="blue"
-                                    />
-                                    <Text
-                                        style={{ 
-                                            width: '80%',
-                                            padding: 5
-                                        }}
-                                    >
-                                        {qao.option_text}
-                                    </Text>
                                 </View>
                             })
                         }
@@ -98,4 +73,4 @@ const RadioButtonGroup = ({
     )
 };
 
-export default memo(RadioButtonGroup)
+export default memo(RadioButtonPair)

@@ -9,24 +9,25 @@ import AuthAxios from '../services/AuthAxios';
 
 const SurveyScreen = ({ navigation }) => {
     const { userToken } = useContext(AuthContext)
-    // const [questions, setQuestions] = useState([]);
+    const [questions, setQuestions] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
-    // useEffect(() => {
-    //     setIsLoading(true)
-    //     AuthAxios(userToken).get("/api/questions/weekly")
-    //     .then(resp => {
-    //         setQuestions(resp.data)
-    //         setIsLoading(false);
-    //     })
-    //     .catch(err => console.log(err))
+    useEffect(() => {
+        setIsLoading(true)
+        AuthAxios(userToken).get("/api/questions/weekly")
+        .then(resp => {
+            console.log('resp.data: ', resp.data)
+            setQuestions(resp.data)
+            setIsLoading(false);
+        })
+        .catch(err => console.log(err))
 
-    //     return () => {
-    //         setIsLoading(false);
-    //     }
-    // }, [])
+        return () => {
+            setIsLoading(false);
+        }
+    }, [])
 
-    const _handleSubmit = (values, questions) => {
+    const _handleSubmit = (values) => {
         console.log('values: ', values)
         console.log('questions: ', questions)
         AuthAxios(userToken).post(
@@ -56,7 +57,7 @@ const SurveyScreen = ({ navigation }) => {
             <ActivityIndicator size={'large'}/>
         </View>
         :
-        <SurveyForm _handleSubmit={_handleSubmit}/>
+        <SurveyForm _handleSubmit={_handleSubmit} questions={questions}/>
     );
 };
 

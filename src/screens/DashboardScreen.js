@@ -64,7 +64,6 @@ const DashboardScreen = ({ navigation }) => {
             <AnimatedCircularProgress
               size={120}
               width={15}
-              // fill={120 / 151 * 100}
               fill={(item.score / (7*item.answer_number)) * 100}
               tintColor="#00e0ff"
               onAnimationComplete={() => console.log('onAnimationComplete')}
