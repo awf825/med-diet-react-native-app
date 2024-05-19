@@ -11,9 +11,9 @@ const RadioButtonGroup = ({
     options,
     fieldCode,
     isStringValue, // is the form value a string (for id'ing) or a number (for scoring)?
-    positiveImpact
 }) => {
     const { values, errors, setFieldValue } = useFormikContext();
+
     return (
         <View>
             <View
@@ -28,6 +28,7 @@ const RadioButtonGroup = ({
             </View>
             <RadioButton.Group
                 onValueChange={(value) => {
+                    console.log('value: ', value)   
                     setFieldValue(fieldCode, value)
                 }}
                 value={values[fieldCode]}
@@ -51,7 +52,7 @@ const RadioButtonGroup = ({
                             options.slice(0,5).map((qao, i) => {
                                 return <View key={i+1} style={{ flexDirection: 'row', alignItems: 'center' }}>
                                     <RadioButton.Android
-                                        value={isStringValue ? qao.option_text : String(positiveImpact ? qao.ordering : -qao.ordering)} // using ordering here as it makes logical sense for 'score' at the moment
+                                        value={isStringValue ? qao.option_text : String(qao.answer_value)} 
                                         color="blue"
                                     />
                                     <Text
@@ -73,7 +74,7 @@ const RadioButtonGroup = ({
                             options.slice(5).map((qao, i) => {
                                 return <View key={i+1} style={{ flexDirection: 'row', alignItems: 'center' }}>
                                     <RadioButton.Android
-                                        value={isStringValue ? qao.option_text : String(positiveImpact ? qao.ordering : -qao.ordering)} // using ordering here as it makes logical sense for 'score' at the moment
+                                        value={isStringValue ? qao.option_text : String(qao.answer_value)}
                                         color="blue"
                                     />
                                     <Text

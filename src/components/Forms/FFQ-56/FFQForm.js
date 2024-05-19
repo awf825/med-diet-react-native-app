@@ -12,7 +12,6 @@ import * as yup from 'yup';
 import RadioButtonGroup from '../controls/RadioButtonGroup/RadioButtonGroup';
 import FormsDatePicker from '../controls/FormsDatePicker/FormsDatePicker';
 import FormsSelector from '../controls/FormsSelector/FormsSelector';
-import _options from './options.json'
 
 const getDynamicFormValues = (questions) => {
     return questions.reduce(
@@ -31,10 +30,10 @@ const getDynamicFormValues = (questions) => {
 const FFQForm = ({ questions, _handleSubmit }) => {
     const _getItem = ({ item, index }) => {
         switch (item.question_field_type.field_name) {
-            case "FFQ-FREQ-A":
+            case "FFQ-FREQ-POSITIVE" || "FFQ-FREQ-NEGATIVE":
                 return <RadioButtonGroup
                     label={item.question_text}
-                    options={_options}
+                    options={item.question_field_type.question_answer_options}
                     fieldCode={item.field_code}
                 />
             case "GENDER":

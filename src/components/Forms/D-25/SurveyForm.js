@@ -10,7 +10,6 @@ import {
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import RadioButtonPair from '../controls/RadioButtonPair/RadioButtonPair';
-import _options from './options.json'
 
 const getDynamicFormValues = (questions) => {
     return questions.reduce(
@@ -27,24 +26,17 @@ const getDynamicFormValues = (questions) => {
 }
 
 const SurveyForm = ({ _handleSubmit, questions }) => {
-    const _getItem = ({ item, index }) => {
-        return <RadioButtonPair
-            label={item.question_text}
-            options={item.question_field_type.question_answer_options}
-            fieldCode={item.field_code}
-            positiveImpact={item.positive_impact>0 ? true : false}
-        />
-    }
-
     class RenderedItem extends PureComponent {
         render() {
             const { item, index } = this.props;
             return (
                 <View>
-                    {console.log('rendering', index)}
-                    {
-                        _getItem({ item, index })
-                    }
+                    <RadioButtonPair
+                        label={item.question_text}
+                        options={item.question_field_type.question_answer_options}
+                        fieldCode={item.field_code}
+                        positiveImpact={item.positive_impact>0 ? true : false}
+                    />
                 </View>
             );
         }
