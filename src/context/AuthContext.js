@@ -86,7 +86,7 @@ export const AuthProvider = ({ children }) => {
             let userInfo = await AsyncStorage.getItem('userInfo');
             setUserInfo(JSON.parse(userInfo))
             //setUserToken(null)
-            // await AsyncStorage.removeItem('userToken') // <- goofy local reset token
+            //await AsyncStorage.removeItem('userToken') // <- goofy local reset token
             setIsLoading(false);
         } catch (e) {
             console.log(`isLogged in error ${e}`)

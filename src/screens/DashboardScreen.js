@@ -7,16 +7,21 @@ import {
   StyleSheet,
   Text,
   StatusBar,
+  ScrollView,
   ActivityIndicator
 } from 'react-native';
 // https://www.npmjs.com/package/react-native-circular-progress
-import { AnimatedCircularProgress } from 'react-native-circular-progress';
+// import { AnimatedCircularProgress, CircularProgress } from 'react-native-circular-progress';
+import CircularProgress from 'react-native-circular-progress-indicator';
 import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
 import AuthAxios from '../services/AuthAxios';
+import { ScoreWidget } from '../components/Widgets/ScoreWidget';
+import { DualIndicatorWidget } from '../components/Widgets/DualIndicatorWidget';
 
 const DashboardScreen = ({ navigation }) => {
   const { userToken } = useContext(AuthContext)
   const [submissions, setSubmissions] = useState([]);
+  const [answersByCategory, setAnswersByCategory] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -24,17 +29,16 @@ const DashboardScreen = ({ navigation }) => {
       setIsLoading(true)
       AuthAxios(userToken).get("/api/submissions/getAnswersByCategory")
         .then(resp => {
-          console.log(resp.data)
+          console.log('resp.data: ', resp.data)
           setSubmissions(resp.data)
+          setAnswersByCategory(resp.data)
           setIsLoading(false);
         })
         .catch(err => console.log(err))
     });
   }, [navigation]);
 
-  const _renderItem = ({ item, index }) => (
-    <View style={styles.item}>
-      {
+      {/* {
         index % 4 === 0 ?
           <>
             <BannerAd
@@ -48,11 +52,11 @@ const DashboardScreen = ({ navigation }) => {
               }}
             />
             <Text>Category: {item.category_display_name}</Text>
-            <Text>Score: {item.score} / {7*item.answer_number}</Text>
+            <Text>Score: {item.score} / {item.answer_number}</Text>
             <AnimatedCircularProgress
               size={120}
               width={15}
-              fill={(item.score / (7*item.answer_number)) * 100}
+              fill={(item.score / (item.answer_number)) * 100}
               tintColor="#00e0ff"
               onAnimationComplete={() => console.log('onAnimationComplete')}
               backgroundColor="#3d5875"
@@ -60,64 +64,58 @@ const DashboardScreen = ({ navigation }) => {
           </> :
           <>
             <Text>Category: {item.category_display_name}</Text>
-            <Text>Score: {item.score} / {7*item.answer_number}</Text>
+            <Text>Score: {item.score} / {item.answer_number}</Text>
             <AnimatedCircularProgress
               size={120}
               width={15}
-              fill={(item.score / (7*item.answer_number)) * 100}
+              fill={(item.score / (item.answer_number)) * 100}
               tintColor="#00e0ff"
               onAnimationComplete={() => console.log('onAnimationComplete')}
               backgroundColor="#3d5875"
             />
           </>
-      }
-    </View>
-  );
+      } */}
 
   return (
-    <SafeAreaView style={styles.container}>
+    <ScrollView style={styles.container}>
       {
-        isLoading
-          ?
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} >
-            <ActivityIndicator size={'large'} />
-          </View>
-          :
-          <View>
-            {/* <BannerAd
-              size={BannerAdSize.BANNER}
-              unitId={TestIds.BANNER}
-              onAdLoaded={() => {
-                console.log('Advert loaded');
-              }}
-              onAdFailedToLoad={error => {
-                console.error('Advert failed to load: ', error);
-              }}
-            /> */}
-            <FlatList
-              data={submissions}
-              renderItem={_renderItem}
-              keyExtractor={item => item.submission_id}
-            />
-          </View>
+        answersByCategory.length > 0 &&
+        <>
+          <ScoreWidget answersByCategory={answersByCategory} isLoading={isLoading} />
+          <DualIndicatorWidget answersByCategory={answersByCategory} isLoading={isLoading} />
+        </>
       }
-    </SafeAreaView>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  colorLabel: {
+    width: "auto",
+    height: "auto",
+    backgroundColor: "red"
+  },
   container: {
     flex: 1,
+    flexDirection: 'column',
+    backgroundColor: '#000',
     marginTop: StatusBar.currentHeight || 0,
   },
-  item: {
-    backgroundColor: '#f9c2ff',
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
+  scoresContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'flex-start'
   },
-  title: {
-    fontSize: 32,
+  legendContainer: {
+    flexDirection: 'column',
+    flex: 1,
+  },
+  progressIndicator: {
+    width: '50%'
+  },
+  label: {
+    color: '#ecf0f1'
   },
 });
 
