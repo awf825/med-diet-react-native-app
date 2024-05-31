@@ -14,13 +14,6 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
-// import DatePicker from 'react-native-date-picker';
-// import Ionicons from 'react-native-vector-icons/Ionicons';
-// import RegistrationSVG from '../assets/images/auth/registration.svg';
-// import GoogleSVG from '../assets/images/auth/google.svg';
-// import FacebookSVG from '../assets/images/auth/facebook.svg';
-// import TwitterSVG from '../assets/images/auth/twitter.svg';
-
 import CustomButton from '../components/CustomButton/CustomButton';
 import { AuthContext } from '../context/AuthContext';
 

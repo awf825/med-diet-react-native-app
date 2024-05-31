@@ -7,7 +7,8 @@ import React, {
     useMemo 
 } from 'react';
 import Snackbar from "react-native-snackbar"
-import { appleAuth } from '@invertase/react-native-apple-authentication';
+// import { appleAuth, appleAuthAndroid } from '@invertase/react-native-apple-authentication';
+import { appleAuthAndroid } from '@invertase/react-native-apple-authentication';
 
 export const AuthContext = createContext();
 
@@ -118,116 +119,118 @@ export const AuthProvider = ({ children }) => {
     }
 
     /* APPLE */
-    const onAppleButtonPress = async (updateCredentialStateForUser) => {
-        console.log('Beginning Apple Authentication');
-
-        // start a login request
-        try {
-            const appleAuthRequestResponse = await appleAuth.performRequest({
-                requestedOperation: appleAuth.Operation.LOGIN,
-                requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
-            });
-
-            const {
-                user,
-                email,
-                fullName,
-                identityToken
-            } = appleAuthRequestResponse;
-
-            fetchAndUpdateAppleCredentialState(updateCredentialStateForUser).catch(error =>
-                updateCredentialStateForUser(`Error: ${error.code}`),
-            );
-
-            console.log('appleAuthRequestResponse: ', appleAuthRequestResponse)
-
-            if (identityToken) {
-                if (email) {
-                    console.log('payload user, email: ', user, email)
-                    AuthAxios().post("/api/auth/appleRegister", {
-                        apple_user_id: user,
-                        first_name: fullName.givenName,
-                        last_name: fullName.familyName,
-                        email: email
-                    })
-                    .then(resp => {
-                        setUserInfo(resp.data.user)
-                        setUserToken(resp.data.token)
-                        setAppleUser(user);
-                        AsyncStorage.setItem('userInfo', JSON.stringify(resp.data.user))
-                        AsyncStorage.setItem('userToken', JSON.stringify(resp.data.token))
-                    })
-                    .catch(e => {
-                        console.log(e)
-                    })
-                } else {      
-                    AuthAxios().post("/api/auth/appleLogin", {
-                        apple_user_id: user,
-                    })
-                    .then(resp => {
-                        console.log(resp.data)
-                        setUserToken(resp.data.token)
-                        setUserInfo(resp.data.user)
-                        setAppleUser(user);
-                        AsyncStorage.setItem('userInfo', JSON.stringify(resp.data.user))
-                        AsyncStorage.setItem('userToken', JSON.stringify(resp.data.token))
-                    })
-                    .catch(e => {
-                        console.log(e)
-                    })         
-                }
-            } else {
-                setSnackbar(
-                    Snackbar.show({
-                        text: "Could not authenticate with Apple ID.",
-                        duration: Snackbar.LENGTH_LONG,
-                    })
-                )
-                setIsLoading(false);
-            }
-
-            console.log(`Apple Authentication Completed, ${user}, ${email}`);
-        } catch (error) {
-            if (error.code === appleAuth.Error.CANCELED) {
-                console.warn('User canceled Apple Sign in.');
-            } else {
-                console.error(error);
-            }
-        }
-    }
-
-    const fetchAndUpdateAppleCredentialState = async (updateCredentialStateForUser) => {
-        if (appleUser === null) {
-            updateCredentialStateForUser('N/A');
-        } else {
-            const credentialState = await appleAuth.getCredentialStateForUser(appleUser);
-            console.log('credentialState: ', credentialState)
-            if (credentialState === appleAuth.State.AUTHORIZED) {
-                updateCredentialStateForUser('AUTHORIZED');
-            } else {
-                updateCredentialStateForUser(credentialState);
-            }
-        }
-    }
-
-    useEffect(() => {
-        if (credentialStateForUser !== -1 && !appleAuth.isSupported) return;
-
-        fetchAndUpdateAppleCredentialState(updateCredentialStateForUser).catch(error =>
-            updateCredentialStateForUser(`Error: ${error.code}`),
-        );
-    }, []);
-
-    useEffect(() => {
-        if (credentialStateForUser !== -1 && !appleAuth.isSupported) return;
-
-        return appleAuth.onCredentialRevoked(async () => {
-            console.warn('Credential Revoked');
-            fetchAndUpdateAppleCredentialState(updateCredentialStateForUser).catch(error =>
-                updateCredentialStateForUser(`Error: ${error.code}`),
-            );
-        });
-    }, []);
+    // if (appleAuthAndroid.isSupported) {
+    //     const onAppleButtonPress = async (updateCredentialStateForUser) => {
+    //         console.log('Beginning Apple Authentication');
+    
+    //         // start a login request
+    //         try {
+    //             const appleAuthRequestResponse = await appleAuth.performRequest({
+    //                 requestedOperation: appleAuth.Operation.LOGIN,
+    //                 requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+    //             });
+    
+    //             const {
+    //                 user,
+    //                 email,
+    //                 fullName,
+    //                 identityToken
+    //             } = appleAuthRequestResponse;
+    
+    //             fetchAndUpdateAppleCredentialState(updateCredentialStateForUser).catch(error =>
+    //                 updateCredentialStateForUser(`Error: ${error.code}`),
+    //             );
+    
+    //             console.log('appleAuthRequestResponse: ', appleAuthRequestResponse)
+    
+    //             if (identityToken) {
+    //                 if (email) {
+    //                     console.log('payload user, email: ', user, email)
+    //                     AuthAxios().post("/api/auth/appleRegister", {
+    //                         apple_user_id: user,
+    //                         first_name: fullName.givenName,
+    //                         last_name: fullName.familyName,
+    //                         email: email
+    //                     })
+    //                     .then(resp => {
+    //                         setUserInfo(resp.data.user)
+    //                         setUserToken(resp.data.token)
+    //                         setAppleUser(user);
+    //                         AsyncStorage.setItem('userInfo', JSON.stringify(resp.data.user))
+    //                         AsyncStorage.setItem('userToken', JSON.stringify(resp.data.token))
+    //                     })
+    //                     .catch(e => {
+    //                         console.log(e)
+    //                     })
+    //                 } else {      
+    //                     AuthAxios().post("/api/auth/appleLogin", {
+    //                         apple_user_id: user,
+    //                     })
+    //                     .then(resp => {
+    //                         console.log(resp.data)
+    //                         setUserToken(resp.data.token)
+    //                         setUserInfo(resp.data.user)
+    //                         setAppleUser(user);
+    //                         AsyncStorage.setItem('userInfo', JSON.stringify(resp.data.user))
+    //                         AsyncStorage.setItem('userToken', JSON.stringify(resp.data.token))
+    //                     })
+    //                     .catch(e => {
+    //                         console.log(e)
+    //                     })         
+    //                 }
+    //             } else {
+    //                 setSnackbar(
+    //                     Snackbar.show({
+    //                         text: "Could not authenticate with Apple ID.",
+    //                         duration: Snackbar.LENGTH_LONG,
+    //                     })
+    //                 )
+    //                 setIsLoading(false);
+    //             }
+    
+    //             console.log(`Apple Authentication Completed, ${user}, ${email}`);
+    //         } catch (error) {
+    //             if (error.code === appleAuth.Error.CANCELED) {
+    //                 console.warn('User canceled Apple Sign in.');
+    //             } else {
+    //                 console.error(error);
+    //             }
+    //         }
+    //     }
+    
+    //     const fetchAndUpdateAppleCredentialState = async (updateCredentialStateForUser) => {
+    //         if (appleUser === null) {
+    //             updateCredentialStateForUser('N/A');
+    //         } else {
+    //             const credentialState = await appleAuth.getCredentialStateForUser(appleUser);
+    //             console.log('credentialState: ', credentialState)
+    //             if (credentialState === appleAuth.State.AUTHORIZED) {
+    //                 updateCredentialStateForUser('AUTHORIZED');
+    //             } else {
+    //                 updateCredentialStateForUser(credentialState);
+    //             }
+    //         }
+    //     }
+    
+    //     useEffect(() => {
+    //         if (credentialStateForUser !== -1 && !appleAuth.isSupported) return;
+    
+    //         fetchAndUpdateAppleCredentialState(updateCredentialStateForUser).catch(error =>
+    //             updateCredentialStateForUser(`Error: ${error.code}`),
+    //         );
+    //     }, []);
+    
+    //     useEffect(() => {
+    //         if (credentialStateForUser !== -1 && !appleAuth.isSupported) return;
+    
+    //         return appleAuth.onCredentialRevoked(async () => {
+    //             console.warn('Credential Revoked');
+    //             fetchAndUpdateAppleCredentialState(updateCredentialStateForUser).catch(error =>
+    //                 updateCredentialStateForUser(`Error: ${error.code}`),
+    //             );
+    //         });
+    //     }, []);        
+    // }
 
     useEffect(() => {
         isLoggedIn();
@@ -263,7 +266,7 @@ export const AuthProvider = ({ children }) => {
                 register,
                 googleLogin,
                 snackbar,
-                onAppleButtonPress,
+                // onAppleButtonPress,
                 credentialStateForUser,
                 updateCredentialStateForUser
             }

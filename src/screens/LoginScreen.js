@@ -12,7 +12,7 @@ import SafariView from "react-native-safari-view";
 import { WebView } from "react-native-webview";
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
-import { AppleButton } from "@invertase/react-native-apple-authentication"
+import { AppleButton, appleAuthAndroid } from "@invertase/react-native-apple-authentication"
 
 // import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 // import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -188,13 +188,16 @@ const LoginScreen = ({ navigation }) => {
               }}>
               <Text>GOOGLE</Text>
             </TouchableOpacity>
-            <AppleButton
-              style={styles.appleButton}
-              cornerRadius={5}
-              buttonStyle={AppleButton.Style.WHITE}
-              buttonType={AppleButton.Type.CONTINUE}
-              onPress={() => onAppleButtonPress(updateCredentialStateForUser)}
-            />
+            {
+              appleAuthAndroid.isSupported &&
+              <AppleButton
+                style={styles.appleButton}
+                cornerRadius={5}
+                buttonStyle={AppleButton.Style.WHITE}
+                buttonType={AppleButton.Type.CONTINUE}
+                onPress={() => onAppleButtonPress(updateCredentialStateForUser)}
+              />
+            }
             <TouchableOpacity
               onPress={() => { }}
               style={{
