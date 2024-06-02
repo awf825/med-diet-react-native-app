@@ -1,4 +1,4 @@
-import React, { memo, useCallback, PureComponent } from 'react';
+import React, { memo, useCallback, PureComponent, useRef } from 'react';
 import {
     View,
     SafeAreaView,
@@ -28,9 +28,22 @@ const getDynamicFormValues = (questions) => {
 }
 
 const FFQForm = ({ questions, _handleSubmit }) => {
+    const ref = useRef()
+
+    const handleScrollTo = (index) => {
+
+        if (ref.current && typeof ref.current.scrollToIndex === 'function'){
+          ref.current.scrollToIndex({
+            animated: true,
+            index: index,
+          })    
+        }
+    }
+
     const _getItem = ({ item, index }) => {
         switch (item.question_field_type.field_name) {
-            case "FFQ-FREQ-POSITIVE" || "FFQ-FREQ-NEGATIVE":
+            // case "FFQ-FREQ-POSITIVE" || "FFQ-FREQ-NEGATIVE":
+            case "FFQ-FREQ-A" || "FFQ-FREQ-NEGATIVE":
                 return <RadioButtonGroup
                     label={item.question_text}
                     options={item.question_field_type.question_answer_options}
@@ -100,21 +113,50 @@ const FFQForm = ({ questions, _handleSubmit }) => {
                     )
                 )}
                 validateOnChange={false}
-                onSubmit={(values) => {
-                    _handleSubmit(values)
-                }}
+                // onSubmit={(values) => {
+                //     console.log('values: ', values)
+                //     // return;
+                //     console.log('submit?')
+                //     _handleSubmit(values)
+                // }}
             >
                 {
                     props => (
                         <SafeAreaView style={styles.main}>
                             <FlatList
+                                ref={ref}
+                                initialScrollIndex={0}  
+                                onScrollToIndexFailed={() => {
+                                    // Layout doesn't know the exact location of the requested element.
+                                    // Falling back to calculating the destination manually
+                                    ref.current?.scrollToOffset({
+                                      offset: 0,
+                                      animated: true,
+                                    });
+                                  }}
                                 data={questions}
                                 renderItem={_renderItem}
                                 keyExtractor={item => item.question_id}
                             />
                             <Button
                                 testID={"SUBMIT"}
-                                onPress={props.handleSubmit}
+                                onPress={() => {
+                                    v = Object.values(props.values)
+    
+                                    idx = v.indexOf('');
+                                    console.log('idx: ', idx)
+                                    if (idx > -1) {
+                                        k = Object.keys(props.values)[idx]
+                                        setTimeout(() => {
+                                            props.setFieldError(k, "All fields are required")
+                                        }, 100)
+                                        handleScrollTo(idx)
+                                    } else {
+                                        console.log('handle submit?')
+                                        _handleSubmit(props.values)
+                                    }
+                                        
+                                }}
                                 title="DONE"
                                 name="submit"
                             />

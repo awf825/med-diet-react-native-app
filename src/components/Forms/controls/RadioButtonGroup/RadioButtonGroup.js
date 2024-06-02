@@ -12,12 +12,17 @@ const RadioButtonGroup = ({
     fieldCode,
     isStringValue, // is the form value a string (for id'ing) or a number (for scoring)?
 }) => {
-    const { values, errors, setFieldValue } = useFormikContext();
+    const { values, errors, setFieldValue, setErrors } = useFormikContext();
+
+    console.log('errors[fieldCode}' , errors[fieldCode] )
 
     return (
         <View>
             <View
                 style={{ 
+                    borderColor: errors[fieldCode] ? "red" : "white",
+                    borderWidth: 1,
+                    borderRadius: 10,
                     padding: 13,
                     margin: 'auto',
                     justifyContent:'center',
@@ -28,6 +33,7 @@ const RadioButtonGroup = ({
             </View>
             <RadioButton.Group
                 onValueChange={(value) => {
+                    setErrors({})
                     console.log('value: ', value)   
                     setFieldValue(fieldCode, value)
                 }}
@@ -89,10 +95,6 @@ const RadioButtonGroup = ({
                             })
                         }
                     </View>
-                {
-                    errors[fieldCode] && 
-                    <Text style={{color: "red"}}>{errors[fieldCode]}</Text>
-                }
             </View>
             </RadioButton.Group>
         </View>
