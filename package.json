@@ -22,6 +22,7 @@
     "lodash": "^4.17.21",
     "react": "18.2.0",
     "react-native": "0.72.6",
+    "react-native-animated-progress": "^1.0.2",
     "react-native-circular-progress": "^1.3.9",
     "react-native-circular-progress-indicator": "^4.4.2",
     "react-native-date-picker": "^4.3.3",
