@@ -25,7 +25,6 @@ const FFQFormScreen = ({ navigation }) => {
     }, [])
 
     const _handleSubmit = (values) => {
-        console.log('values: ', values)
         AuthAxios(userToken).post(
             "/api/submissions/submit",
             {

@@ -22,10 +22,12 @@ export const AuthProvider = ({ children }) => {
 
     /* LOCAL */
     const login = (user) => {
+        console.log('user @ login: ', user)
         setIsLoading(true);
         setTimeout(() => {
             AuthAxios().post("/api/auth/login", user)
                 .then(resp => {
+                    console.log('resp: ', resp)
                     console.log('resp.data: ', resp.data)
                     setUserToken(resp.data.token)
                     setUserInfo(resp.data.user)
@@ -34,6 +36,7 @@ export const AuthProvider = ({ children }) => {
                     setIsLoading(false);
                 })
                 .catch(e => {
+                    console.log('error caught in login: ', e)
                     console.log(e)
                     setSnackbar(
                         Snackbar.show({
@@ -86,7 +89,7 @@ export const AuthProvider = ({ children }) => {
             setUserToken(userToken)
             let userInfo = await AsyncStorage.getItem('userInfo');
             setUserInfo(JSON.parse(userInfo))
-            //setUserToken(null)
+            //]setUserToken(null)
             //await AsyncStorage.removeItem('userToken') // <- goofy local reset token
             setIsLoading(false);
         } catch (e) {

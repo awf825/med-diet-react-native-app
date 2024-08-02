@@ -23,17 +23,19 @@ const DashboardScreen = ({ navigation }) => {
   const { userToken } = useContext(AuthContext)
   const [submissions, setSubmissions] = useState([]);
   const [answersByCategory, setAnswersByCategory] = useState([]);
+  const [FFQBaselineStats, setFFQBaselineStats] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [notEnoughData, setNotEnoughData] = useState(false);
 
   useEffect(() => {
     navigation.addListener('focus', () => {
       setIsLoading(true)
-      AuthAxios(userToken).get("/api/submissions/getAnswersByCategory")
+      AuthAxios(userToken).get("/api/submissions/getDashboard")
         .then(resp => {
           console.log('resp.data: ', resp.data)
-          setSubmissions(resp.data)
-          setAnswersByCategory(resp.data)
+          setSubmissions(resp.data.answersByCategory)
+          setAnswersByCategory(resp.data.answersByCategory)
+          setFFQBaselineStats(resp.data.ffqBaseline)
           setIsLoading(false);
         })
         .catch(err => console.log(err))
@@ -44,9 +46,20 @@ const DashboardScreen = ({ navigation }) => {
     <ScrollView style={styles.container}>
         <>
           <View style={styles.widgetContainer}>
-            <Text>RECIPE</Text>
+            <Text>FFQ</Text>
             <View style={styles.textBubble}>
-
+                <FlatList
+                    data={FFQBaselineStats}
+                    renderItem={({item}) => <View>
+                        <View>
+                          <Text>{item.sum_units}</Text>
+                          <Text>{item.daily_question_id}</Text>
+                          <Text>{item.amount}</Text>
+                          <Text>{item.success}</Text>
+                        </View>
+                      </View>
+                    }
+                />
             </View>
             <Text>----Link to Custom Generator</Text>
           </View>
@@ -57,12 +70,12 @@ const DashboardScreen = ({ navigation }) => {
               <>
                 <Text>SURVEY AND PROGRESS</Text>
                 <View style={styles.textBubble}>
-                  <View>
+                  {/* <View>
                     <Text>Submissions: </Text>
                     <Text>Last submission: </Text>
                     <Text>Streak: </Text>
                     <Text>Survey Now</Text>
-                  </View>
+                  </View> */}
                   <View styles={styles.progressContainer}>
                     <FlatList
                       data={answersByCategory}
