@@ -18,6 +18,8 @@ import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads'
 import AuthAxios from '../services/AuthAxios';
 import { ScoreWidget } from '../components/Widgets/ScoreWidget';
 import { DualIndicatorWidget } from '../components/Widgets/DualIndicatorWidget';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import iconMap from '../services/iconMap';
 
 const DashboardScreen = ({ navigation }) => {
   const { userToken } = useContext(AuthContext)
@@ -35,11 +37,15 @@ const DashboardScreen = ({ navigation }) => {
           console.log('resp.data: ', resp.data)
           setSubmissions(resp.data.answersByCategory)
           setAnswersByCategory(resp.data.answersByCategory)
-          setFFQBaselineStats(resp.data.ffqBaseline)
+          setFFQBaselineStats(resp.data.ffqResponse)
           setIsLoading(false);
         })
         .catch(err => console.log(err))
     });
+
+    return () => {
+      setIsLoading(false);
+    }
   }, [navigation]);
 
   return (
@@ -52,10 +58,9 @@ const DashboardScreen = ({ navigation }) => {
                     data={FFQBaselineStats}
                     renderItem={({item}) => <View>
                         <View>
-                          <Text>{item.sum_units}</Text>
-                          <Text>{item.daily_question_id}</Text>
-                          <Text>{item.amount}</Text>
-                          <Text>{item.success}</Text>
+                          {/* <FontAwesomeIcon icon={iconMap[item.field_code]} /> */}
+                          <Text>{item.question_text}</Text>
+                          <Text>{item.success ? 'SUCCESS!' : 'FAIL'}</Text>
                         </View>
                       </View>
                     }
@@ -140,6 +145,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
+    height: 1000,
     // backgroundColor: '#000',
     marginTop: StatusBar.currentHeight || 0,
   },

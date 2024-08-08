@@ -13,19 +13,22 @@ const SurveyScreen = ({ navigation }) => {
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        setIsLoading(true)
-        AuthAxios(userToken).get("/api/questions/weekly")
-        .then(resp => {
-            console.log('resp.data: ', resp.data)
-            setQuestions(resp.data)
-            setIsLoading(false);
-        })
-        .catch(err => console.log(err))
+        navigation.addListener('focus', () => {
+            setIsLoading(true)
+            AuthAxios(userToken).get("/api/questions/weekly")
+            .then(resp => {
+                console.log('resp.data: ', resp.data)
+                setQuestions(resp.data)
+                setIsLoading(false);
+            })
+            .catch(err => console.log(err))
+        });
 
         return () => {
             setIsLoading(false);
         }
-    }, [])
+    }, [navigation]);
+
 
     const _handleSubmit = (values) => {
         console.log('values: ', values)

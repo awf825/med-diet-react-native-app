@@ -26,6 +26,7 @@ const getDynamicFormValues = (questions) => {
 }
 
 const SurveyForm = ({ _handleSubmit, questions }) => {
+    console.log('questions @ SurveyForm: ', questions)
     class RenderedItem extends PureComponent {
         render() {
             const { item, index } = this.props;
@@ -48,6 +49,7 @@ const SurveyForm = ({ _handleSubmit, questions }) => {
 
     return (
         <Formik
+            enableReinitialize={true}
             initialValues={getDynamicFormValues(questions)}
             validationSchema={yup.object().shape(
                 questions.reduce(

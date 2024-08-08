@@ -9,6 +9,7 @@ import React, {
 import Snackbar from "react-native-snackbar"
 // import { appleAuth, appleAuthAndroid } from '@invertase/react-native-apple-authentication';
 import { appleAuthAndroid } from '@invertase/react-native-apple-authentication';
+import iconMap from '../services/iconMap';
 
 export const AuthContext = createContext();
 
@@ -83,7 +84,6 @@ export const AuthProvider = ({ children }) => {
 
     const isLoggedIn = async () => {
         try {
-            console.log('fire isLoggedIn')
             setIsLoading(true);
             let userToken = await AsyncStorage.getItem('userToken');
             setUserToken(userToken)

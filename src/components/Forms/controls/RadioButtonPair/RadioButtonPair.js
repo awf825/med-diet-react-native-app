@@ -26,8 +26,7 @@ const RadioButtonPair = ({
                 <Text>{label}</Text>
             </View>
             <RadioButton.Group
-                onValueChange={(value) => {
-                    console.log('value: ', value)                
+                onValueChange={(value) => {             
                     setFieldValue(fieldCode, value)
                 }}
                 value={values[fieldCode]}
